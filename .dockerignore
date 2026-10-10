@@ -1,0 +1,61 @@
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+.coverage
+build/
+dist/
+*.egg-info/
+
+# Large analytics artifacts are runtime mounts or external artifacts, not image inputs.
+data/
+cache/
+notebooks/
+
+# Frontend local build outputs.
+node_modules/
+apps/web/node_modules/
+apps/web/.next/
+apps/web/coverage/
+*.tsbuildinfo
+
+# Git / CI metadata not needed inside images.
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Local docs, tests, and handoff files are not required by runtime images.
+docs/
+tests/
+0001-*.patch
+*.bundle
+*.bundle.lock
+issue-*-manual-edits.md
+
+# Editor / OS files.
+.idea/
+.vscode/
+.DS_Store
+
+# Never include deployment secrets in any image build context.
+**/.env
+**/.env.*
+**/secrets/
+**/private/
+**/*.key
+**/*.pem
+
+**/institution-data/
+
+# Generated demo exports and browser reports are never image inputs.
+apps/web/.pages-build/
+apps/web/out/
+apps/web/test-results/
+apps/web/playwright-report/

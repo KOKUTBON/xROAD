@@ -1,0 +1,2235 @@
+{
+  "api_version": "v1",
+  "contract_version": "road_risk_route_contract_v1",
+  "openapi_contract_version": "road_risk_openapi_v1",
+  "operation_count": 140,
+  "route_count": 137,
+  "routes": [
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "healthz_healthz_get"
+      },
+      "path": "/healthz",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "admin_automations_v1_admin_automations_get"
+      },
+      "path": "/v1/admin/automations",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "admin_control_center_v1_admin_control_center_get"
+      },
+      "path": "/v1/admin/control-center",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "admin_create_data_source_v1_admin_data_sources_post"
+      },
+      "path": "/v1/admin/data-sources",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "PATCH"
+      ],
+      "operation_ids": {
+        "PATCH": "admin_update_data_source_v1_admin_data_sources__source_id__patch"
+      },
+      "path": "/v1/admin/data-sources/{source_id}",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "admin_archive_data_source_v1_admin_data_sources__source_id__archive_post"
+      },
+      "path": "/v1/admin/data-sources/{source_id}/archive",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "admin_governance_matrix_v1_admin_governance_matrix_get"
+      },
+      "path": "/v1/admin/governance-matrix",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "institution_deployment_v1_admin_institution_deployment_get"
+      },
+      "path": "/v1/admin/institution-deployment",
+      "publication_tier": "restricted installation configuration",
+      "roles": [
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "PATCH"
+      ],
+      "operation_ids": {
+        "PATCH": "admin_update_membership_v1_admin_memberships__membership_id__patch"
+      },
+      "path": "/v1/admin/memberships/{membership_id}",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "admin_assign_municipality_access_v1_admin_municipality_access_post"
+      },
+      "path": "/v1/admin/municipality-access",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "sync_postgis_domain_from_artifacts_v1_admin_postgis_domain_sync_post"
+      },
+      "path": "/v1/admin/postgis-domain/sync",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "postgis_domain_sync_plan_v1_admin_postgis_domain_sync_plan_get"
+      },
+      "path": "/v1/admin/postgis-domain/sync-plan",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "admin_user_roster_v1_admin_user_roster_get"
+      },
+      "path": "/v1/admin/user-roster",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "admin",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "admin_link_user_v1_admin_users_link_post"
+      },
+      "path": "/v1/admin/users/link",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "analyst",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "analyst_city_risk_map_v1_analyst_cities__city_key__risk_map_get"
+      },
+      "path": "/v1/analyst/cities/{city_key}/risk-map",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "analyst",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "analyst_city_segment_drill_down_v1_analyst_cities__city_key__segments__segment_score_id__get"
+      },
+      "path": "/v1/analyst/cities/{city_key}/segments/{segment_score_id}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "auth",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "auth_me_v1_auth_me_get"
+      },
+      "path": "/v1/auth/me",
+      "publication_tier": "identity metadata",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "auth",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "auth_municipality_access_v1_auth_municipalities__municipality_id__access_get"
+      },
+      "path": "/v1/auth/municipalities/{municipality_id}/access",
+      "publication_tier": "identity metadata",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "auth",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "auth_organization_access_v1_auth_organizations__organization_id__access_get"
+      },
+      "path": "/v1/auth/organizations/{organization_id}/access",
+      "publication_tier": "identity metadata",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "auth",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "auth_role_matrix_v1_auth_role_matrix_get"
+      },
+      "path": "/v1/auth/role-matrix",
+      "publication_tier": "operational metadata",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "automation_notifications_v1_automation_notifications_get"
+      },
+      "path": "/v1/automation/notifications",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "automation_notifications_deliver_v1_automation_notifications_deliver_post"
+      },
+      "path": "/v1/automation/notifications/deliver",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "automation_overview_v1_automation_overview_get"
+      },
+      "path": "/v1/automation/overview",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "automation_runs_v1_automation_runs_get"
+      },
+      "path": "/v1/automation/runs",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "automation_runs_trigger_v1_automation_runs_trigger_post"
+      },
+      "path": "/v1/automation/runs/trigger",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "automation_schedules_v1_automation_schedules_get"
+      },
+      "path": "/v1/automation/schedules",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "PATCH"
+      ],
+      "operation_ids": {
+        "PATCH": "automation_schedule_control_v1_automation_schedules__schedule_name__patch"
+      },
+      "path": "/v1/automation/schedules/{schedule_name}",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "automation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "automation_stale_sources_v1_automation_stale_sources_get"
+      },
+      "path": "/v1/automation/stale-sources",
+      "publication_tier": "restricted internal",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "causal_evaluate_countermeasures_v1_causal_evaluate_countermeasures_post"
+      },
+      "path": "/v1/causal/evaluate-countermeasures",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "cip_optimize_schedule_v1_cip_optimize_schedule_post"
+      },
+      "path": "/v1/cip/optimize-schedule",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "analyze_fleet_v1_cits_fleets_analyze_post"
+      },
+      "path": "/v1/cits/fleets/analyze",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_cits_fleet_telemetry_v1_cits_fleets_telemetry_get"
+      },
+      "path": "/v1/cits/fleets/telemetry",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "cits_generate_actuation_v1_cits_generate_actuation_post"
+      },
+      "path": "/v1/cits/generate-actuation",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "compile_cits_ivi_message_v1_cits_ivi_compile_post"
+      },
+      "path": "/v1/cits/ivi/compile",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_cits_ivi_messages_v1_cits_ivi_messages_get"
+      },
+      "path": "/v1/cits/ivi/messages",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "compliance_ai_act_audit_v1_compliance_ai_act_audit_post"
+      },
+      "path": "/v1/compliance/ai-act-audit",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "cv_audit_roadway_v1_cv_audit_roadway_post"
+      },
+      "path": "/v1/cv/audit-roadway",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "dashboard_summary_v1_dashboard_summary_get"
+      },
+      "path": "/v1/dashboard-summary",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "federated_train_round_v1_federated_train_round_post"
+      },
+      "path": "/v1/federated/train-round",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "forecasting_st_gnn_predict_v1_forecasting_st_gnn_predict_post"
+      },
+      "path": "/v1/forecasting/st-gnn-predict",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "analyze_forensic_case_v1_forensics_analyze_post"
+      },
+      "path": "/v1/forensics/analyze",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_forensic_cases_v1_forensics_cases_get"
+      },
+      "path": "/v1/forensics/cases",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_forensic_case_v1_forensics_cases__case_id__get"
+      },
+      "path": "/v1/forensics/cases/{case_id}",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_forensic_case_dossier_v1_forensics_cases__case_id__dossier_get"
+      },
+      "path": "/v1/forensics/cases/{case_id}/dossier",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "healthz_v1_healthz_get"
+      },
+      "path": "/v1/healthz",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "hsm_functional_classes_v1_hsm_functional_classes_get"
+      },
+      "path": "/v1/hsm/functional-classes",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "hsm_screen_network_v1_hsm_screen_network_post"
+      },
+      "path": "/v1/hsm/screen-network",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_ingestion_jobs_v1_ingestion_jobs_get"
+      },
+      "path": "/v1/ingestion-jobs",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_ingestion_upload_center_v1_ingestion_jobs_upload_center_get"
+      },
+      "path": "/v1/ingestion-jobs/upload-center",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "register_ingestion_upload_v1_ingestion_jobs_uploads_post"
+      },
+      "path": "/v1/ingestion-jobs/uploads",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_ingestion_job_status_v1_ingestion_jobs__job_id__get"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "approve_ingestion_job_v1_ingestion_jobs__job_id__approve_post"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/approve",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "cancel_ingestion_job_v1_ingestion_jobs__job_id__cancel_post"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/cancel",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_ingestion_job_errors_v1_ingestion_jobs__job_id__errors_get"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/errors",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_ingestion_job_logs_v1_ingestion_jobs__job_id__logs_get"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/logs",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_ingestion_job_manifest_v1_ingestion_jobs__job_id__manifest_get"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/manifest",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "reject_ingestion_job_v1_ingestion_jobs__job_id__reject_post"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/reject",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "retry_ingestion_job_v1_ingestion_jobs__job_id__retry_post"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/retry",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "run_ingestion_job_v1_ingestion_jobs__job_id__run_post"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/run",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "validate_ingestion_job_v1_ingestion_jobs__job_id__validate_post"
+      },
+      "path": "/v1/ingestion-jobs/{job_id}/validate",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "intervention",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "operation_ids": {
+        "GET": "interventions_portfolio_v1_interventions_portfolio_get",
+        "POST": "interventions_create_portfolio_item_v1_interventions_portfolio_post"
+      },
+      "path": "/v1/interventions/portfolio",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "intervention",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "interventions_portfolio_export_v1_interventions_portfolio_export_get"
+      },
+      "path": "/v1/interventions/portfolio/export",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "intervention",
+      "methods": [
+        "PATCH"
+      ],
+      "operation_ids": {
+        "PATCH": "interventions_update_portfolio_item_v1_interventions_portfolio__intervention_id__patch"
+      },
+      "path": "/v1/interventions/portfolio/{intervention_id}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "intervention",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "interventions_remove_portfolio_item_v1_interventions_portfolio__intervention_id__remove_post"
+      },
+      "path": "/v1/interventions/portfolio/{intervention_id}/remove",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "irap_investment_plans_v1_irap_investment_plans_post"
+      },
+      "path": "/v1/irap/investment-plans",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "irap_star_ratings_v1_irap_star_ratings_post"
+      },
+      "path": "/v1/irap/star-ratings",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "trigger_published_refresh_job_v1_jobs_published_refresh_post"
+      },
+      "path": "/v1/jobs/published-refresh",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "get_backend_job_status_v1_jobs__job_id__get"
+      },
+      "path": "/v1/jobs/{job_id}",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "micromobility_analyze_trips_v1_micromobility_analyze_trips_post"
+      },
+      "path": "/v1/micromobility/analyze-trips",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "national_hierarchy_v1_national_hierarchies__country_code__get"
+      },
+      "path": "/v1/national/hierarchies/{country_code}",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "national_rollups_v1_national_rollups__country_code__get"
+      },
+      "path": "/v1/national/rollups/{country_code}",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "observability",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "observability_info_v1_observability_info_get"
+      },
+      "path": "/v1/observability/info",
+      "publication_tier": "operational metadata",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "observability",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "observability_metrics_v1_observability_metrics_get"
+      },
+      "path": "/v1/observability/metrics",
+      "publication_tier": "internal ops",
+      "roles": [
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "observability",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "observability_readiness_v1_observability_readiness_get"
+      },
+      "path": "/v1/observability/readiness",
+      "publication_tier": "operational metadata",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_institution_config_v1_public_branding_get"
+      },
+      "path": "/v1/public/branding",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_catalog_v1_public_cities_get"
+      },
+      "path": "/v1/public/cities",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_interventions_v1_public_cities__city_key__interventions_get"
+      },
+      "path": "/v1/public/cities/{city_key}/interventions",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_reports_v1_public_cities__city_key__reports_get"
+      },
+      "path": "/v1/public/cities/{city_key}/reports",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_report_download_v1_public_cities__city_key__reports__report_id__download_get"
+      },
+      "path": "/v1/public/cities/{city_key}/reports/{report_id}/download",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_risk_map_v1_public_cities__city_key__risk_map_get"
+      },
+      "path": "/v1/public/cities/{city_key}/risk-map",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_risk_map_v1_public_cities__city_key__risk_tiles_get"
+      },
+      "path": "/v1/public/cities/{city_key}/risk-tiles",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_city_segment_drill_down_v1_public_cities__city_key__segments__segment_score_id__get"
+      },
+      "path": "/v1/public/cities/{city_key}/segments/{segment_score_id}",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "healthz_v1_public_health_get"
+      },
+      "path": "/v1/public/health",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "none",
+      "category": "public",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "public_institution_config_v1_public_institution_config_get"
+      },
+      "path": "/v1/public/institution-config",
+      "publication_tier": "public aggregated only",
+      "roles": [
+        "public"
+      ]
+    },
+    {
+      "auth": "publication-tier aware",
+      "category": "published_resource",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "published_index_v1_published_index_get"
+      },
+      "path": "/v1/published-index",
+      "publication_tier": "public/internal/restricted according to source policy",
+      "roles": [
+        "public",
+        "municipality_viewer",
+        "analyst",
+        "admin"
+      ]
+    },
+    {
+      "auth": "publication-tier aware",
+      "category": "published_resource",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "published_resource_latest_v1_published_resource_latest_get"
+      },
+      "path": "/v1/published-resource/latest",
+      "publication_tier": "public/internal/restricted according to source policy",
+      "roles": [
+        "public",
+        "municipality_viewer",
+        "analyst",
+        "admin"
+      ]
+    },
+    {
+      "auth": "publication-tier aware",
+      "category": "published_resource",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "published_resource_query_v1_published_resource_query_get"
+      },
+      "path": "/v1/published-resource/query",
+      "publication_tier": "public/internal/restricted according to source policy",
+      "roles": [
+        "public",
+        "municipality_viewer",
+        "analyst",
+        "admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "recommendation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "recommendations_list_v1_recommendations_get"
+      },
+      "path": "/v1/recommendations",
+      "publication_tier": "internal; exports contain approved records only",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "recommendation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "recommendations_export_v1_recommendations_action_plan_export_get"
+      },
+      "path": "/v1/recommendations/action-plan/export",
+      "publication_tier": "internal; exports contain approved records only",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "recommendation",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "recommendations_detail_v1_recommendations__recommendation_id__get"
+      },
+      "path": "/v1/recommendations/{recommendation_id}",
+      "publication_tier": "internal; exports contain approved records only",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "recommendation",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "recommendations_review_v1_recommendations__recommendation_id__review_post"
+      },
+      "path": "/v1/recommendations/{recommendation_id}/review",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "reporting_ministerial_dossier_v1_reporting_ministerial_dossier_post"
+      },
+      "path": "/v1/reporting/ministerial-dossier",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "reporting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_reports_v1_reports_get"
+      },
+      "path": "/v1/reports",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "reporting",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "generate_report_v1_reports_generate_post"
+      },
+      "path": "/v1/reports/generate",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "reporting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "reports_overview_v1_reports_overview_get"
+      },
+      "path": "/v1/reports/overview",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "reporting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "report_detail_v1_reports__report_id__get"
+      },
+      "path": "/v1/reports/{report_id}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "reporting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "report_download_v1_reports__report_id__download_get"
+      },
+      "path": "/v1/reports/{report_id}/download",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "reporting",
+      "methods": [
+        "PATCH"
+      ],
+      "operation_ids": {
+        "PATCH": "report_lifecycle_v1_reports__report_id__lifecycle_patch"
+      },
+      "path": "/v1/reports/{report_id}/lifecycle",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "research_evaluate_panel_risk_v1_research_evaluate_panel_risk_post"
+      },
+      "path": "/v1/research/evaluate-panel-risk",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_catalog_v1_scenarios_catalog_get"
+      },
+      "path": "/v1/scenarios/catalog",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_city_bundle_v1_scenarios_cities__city_key__get"
+      },
+      "path": "/v1/scenarios/cities/{city_key}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_city_portfolios_v1_scenarios_cities__city_key__portfolios_get"
+      },
+      "path": "/v1/scenarios/cities/{city_key}/portfolios",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_city_scenario_detail_v1_scenarios_cities__city_key__scenarios__scenario_id__get"
+      },
+      "path": "/v1/scenarios/cities/{city_key}/scenarios/{scenario_id}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_drafts_v1_scenarios_drafts_get",
+        "POST": "scenarios_create_draft_v1_scenarios_drafts_post"
+      },
+      "path": "/v1/scenarios/drafts",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_get_draft_v1_scenarios_drafts__scenario_draft_id__get",
+        "PATCH": "scenarios_update_draft_v1_scenarios_drafts__scenario_draft_id__patch"
+      },
+      "path": "/v1/scenarios/drafts/{scenario_draft_id}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "scenarios_run_draft_v1_scenarios_drafts__scenario_draft_id__run_post"
+      },
+      "path": "/v1/scenarios/drafts/{scenario_draft_id}/run",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "scenarios_validate_draft_v1_scenarios_drafts__scenario_draft_id__validate_post"
+      },
+      "path": "/v1/scenarios/drafts/{scenario_draft_id}/validate",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_intervention_library_v1_scenarios_intervention_library_get"
+      },
+      "path": "/v1/scenarios/intervention-library",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "scenario",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "scenarios_runs_v1_scenarios_runs_get"
+      },
+      "path": "/v1/scenarios/runs",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "signal_phase_city_coverage_v1_signal_phase_cities__city_key__coverage_get"
+      },
+      "path": "/v1/signal-phase/cities/{city_key}/coverage",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "signal_phase_city_operator_board_v1_signal_phase_cities__city_key__operator_board_get"
+      },
+      "path": "/v1/signal-phase/cities/{city_key}/operator-board",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "signal_phase_city_overview_v1_signal_phase_cities__city_key__overview_get"
+      },
+      "path": "/v1/signal-phase/cities/{city_key}/overview",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "signal_phase_city_targets_v1_signal_phase_cities__city_key__targets_get"
+      },
+      "path": "/v1/signal-phase/cities/{city_key}/targets",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "simulation_synthetic_countermeasure_eval_v1_simulation_synthetic_countermeasure_eval_post"
+      },
+      "path": "/v1/simulation/synthetic-countermeasure-eval",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "siting",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "siting_create_analysis_v1_siting_analyses_post"
+      },
+      "path": "/v1/siting-analyses",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "siting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "siting_analysis_status_v1_siting_analyses__analysis_id__get"
+      },
+      "path": "/v1/siting-analyses/{analysis_id}",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "siting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "siting_analysis_export_v1_siting_analyses__analysis_id__export_get"
+      },
+      "path": "/v1/siting-analyses/{analysis_id}/export",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "siting",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "siting_analysis_results_v1_siting_analyses__analysis_id__results_get"
+      },
+      "path": "/v1/siting-analyses/{analysis_id}/results",
+      "publication_tier": "internal unless explicitly public",
+      "roles": [
+        "analyst",
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "ssam_analyze_conflicts_v1_ssam_analyze_conflicts_post"
+      },
+      "path": "/v1/ssam/analyze-conflicts",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "storage_artifact_access_v1_storage_artifacts_access_get"
+      },
+      "path": "/v1/storage/artifacts/access",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "storage_report_presign_v1_storage_reports_presign_post"
+      },
+      "path": "/v1/storage/reports/presign",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "ingestion",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "storage_upload_presign_v1_storage_uploads_presign_post"
+      },
+      "path": "/v1/storage/uploads/presign",
+      "publication_tier": "restricted upload/artifact metadata",
+      "roles": [
+        "data_operator",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "telematics_publish_event_v1_telematics_events_publish_post"
+      },
+      "path": "/v1/telematics/events/publish",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "telematics_recent_events_v1_telematics_events_recent_get"
+      },
+      "path": "/v1/telematics/events/recent",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "telematics_events_sse_v1_telematics_events_sse_get"
+      },
+      "path": "/v1/telematics/events/sse",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "telematics_ingest_v1_telematics_ingest_post"
+      },
+      "path": "/v1/telematics/ingest",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "telematics_near_misses_v1_telematics_near_misses_post"
+      },
+      "path": "/v1/telematics/near-misses",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_active_tmc_incidents_v1_tmc_active_incidents_get"
+      },
+      "path": "/v1/tmc/active-incidents",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "actuate_tmc_playbook_v1_tmc_actuate_playbook_post"
+      },
+      "path": "/v1/tmc/actuate-playbook",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "evaluate_tmc_trigger_v1_tmc_evaluate_trigger_post"
+      },
+      "path": "/v1/tmc/evaluate-trigger",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "evaluate_multi_incident_conflicts_v1_tmc_multi_incident_evaluate_conflicts_post"
+      },
+      "path": "/v1/tmc/multi-incident/evaluate-conflicts",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "POST"
+      ],
+      "operation_ids": {
+        "POST": "optimize_multi_incident_mitigation_v1_tmc_multi_incident_optimize_mitigation_post"
+      },
+      "path": "/v1/tmc/multi-incident/optimize-mitigation",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_multi_incident_scenarios_v1_tmc_multi_incident_scenarios_get"
+      },
+      "path": "/v1/tmc/multi-incident/scenarios",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer when auth is enabled",
+      "category": "core",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "list_tmc_playbooks_v1_tmc_playbooks_get"
+      },
+      "path": "/v1/tmc/playbooks",
+      "publication_tier": "internal",
+      "roles": [
+        "municipality_viewer"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "traffic_operations_city_capabilities_v1_traffic_operations_cities__city_key__capabilities_get"
+      },
+      "path": "/v1/traffic-operations/cities/{city_key}/capabilities",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "vru_city_summary_v1_vru_cities__city_key__summary_get"
+      },
+      "path": "/v1/vru/cities/{city_key}/summary",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    },
+    {
+      "auth": "bearer",
+      "category": "traffic_operations",
+      "methods": [
+        "GET"
+      ],
+      "operation_ids": {
+        "GET": "vru_city_top_corridors_v1_vru_cities__city_key__top_corridors_get"
+      },
+      "path": "/v1/vru/cities/{city_key}/top-corridors",
+      "publication_tier": "internal engineering",
+      "roles": [
+        "traffic_engineer",
+        "admin",
+        "super_admin"
+      ]
+    }
+  ]
+}

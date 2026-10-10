@@ -1,0 +1,74 @@
+# Example Institutional Configuration for Cross-Border / International Deployment
+# Scenario: National Transport Ministry / Agency Deployment (France - Cerema)
+
+[project]
+name = "france-national-road-safety"
+country_code = "FR"
+timezone = "Europe/Paris"
+
+[institution]
+id = "cerema_fr"
+name = "Centre d'études et d'expertise sur les risques, la mobilité et l'aménagement (Cerema)"
+tier = "country"
+brand_name = "SécurRoute France"
+brand_primary_color = "#0055A5"
+brand_logo_url = "/brand/road-accidents-risk-modeling-icon.svg"
+contact_email = "road-safety@example.test"
+portal_subtitle = "Plateforme institutionnelle d'analyse prédictive des risques routiers"
+
+[localization]
+language = "fr"
+fallback_languages = ["en"]
+driving_side = "right"
+distance_unit = "km"
+speed_unit = "km/h"
+currency = "EUR"
+
+[geography]
+jurisdiction_name = "France"
+admin_level = "country"
+network_type = "drive"
+segment_length_m = 100
+
+[geospatial]
+native_crs = "EPSG:2154"                 # RGF93 / Lambert-93 official French projection
+target_crs = "EPSG:4326"                 # Standard WGS84 coordinates for API & Web tiles
+road_network_source = "ign_bd_topo"      # Official IGN French national road network
+bounding_box = [-5.2, 41.3, 9.6, 51.1]
+
+[data]
+weather_provider = "open-meteo"
+population_provider = "insee"
+traffic_provider = "cerema_flux"
+
+[ingestion]
+schema_standard = "baac"                 # French BAAC (Base Annuelle des Accidents Corporels)
+crash_source_format = "csv"
+
+[modeling]
+tasks = ["segment_frequency", "severity_classification", "vru_exposure"]
+spatial_holdout = "departement"
+temporal_holdout = "year"
+
+[governance]
+k_anonymity_threshold = 5
+data_minimization_mode = "strict"
+compliance_frameworks = ["eu_ai_act", "gdpr", "secnumcloud"]
+allow_public_raw_coordinates = false
+
+# Deployment settings are examples only; replace IDs with actual IdP/catalog IDs.
+[deployment]
+schema_version = 1
+profile = "transport_ministry"
+
+[[deployment.organizations]]
+id = "transport-ministry-example"
+name = "Example National Transport Authority"
+short_label = "Transport Authority"
+municipality_ids = ["jurisdiction-example"]
+
+[[deployment.jurisdictions]]
+id = "jurisdiction-example"
+name = "Example Pilot Jurisdiction"
+region_label = "France"
+coverage_label = "Awaiting validated data"

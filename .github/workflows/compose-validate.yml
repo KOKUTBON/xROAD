@@ -1,0 +1,76 @@
+name: Compose Validate
+
+# Validates the base docker compose file is syntactically correct and
+# resolves with the documented `.env.example`. This is a cheap guard
+# rail: if anyone edits `infra/docker/docker-compose.yml` and breaks
+# variable interpolation or service references, CI catches it without
+# needing a full container build.
+#
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/docker/**"
+      - "infra/staging/**"
+      - ".github/workflows/compose-validate.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/docker/**"
+      - "infra/staging/**"
+      - ".github/workflows/compose-validate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: docker compose config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Prepare env file
+        run: cp infra/docker/.env.example infra/docker/.env
+
+      - name: Validate base compose file
+        run: |
+          docker compose \
+            --env-file infra/docker/.env \
+            -f infra/docker/docker-compose.yml \
+            config --quiet
+
+      - name: Validate compose with worker + scheduler + web profiles
+        run: |
+          docker compose \
+            --env-file infra/docker/.env \
+            -f infra/docker/docker-compose.yml \
+            --profile worker \
+            --profile scheduler \
+            --profile web \
+            config --quiet
+
+      - name: Validate compose with staging env
+        run: |
+          docker compose \
+            --env-file infra/staging/.env.example \
+            -f infra/staging/docker-compose.staging.yml \
+            config --quiet
+
+      - name: Validate institutional compose stack
+        env:
+          ROAD_RISK_HOSTNAME: road-risk.example.test
+          ROAD_RISK_API_AUTH_JWKS_URL: https://sso.example.test/realms/road-risk/protocol/openid-connect/certs
+          ROAD_RISK_API_AUTH_ISSUER: https://sso.example.test/realms/road-risk
+          ROAD_RISK_API_AUTH_AUDIENCE: road-risk-api
+          ROAD_RISK_WEB_OIDC_CLIENT_ID: road-risk-web
+        run: |
+          docker compose \
+            --env-file infra/docker/.env.institution.example \
+            -f infra/docker/docker-compose.institution.yml \
+            config --quiet

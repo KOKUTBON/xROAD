@@ -1,0 +1,16 @@
+{
+  "api_version": "v1",
+  "job": {
+    "job_id": "11111111-1111-1111-1111-111111111111",
+    "organization_id": "00000000-0000-0000-0000-000000000118",
+    "municipality_id": "00000000-0000-0000-0000-000000000119",
+    "job_type": "ingestion_upload",
+    "status": "validated_ready",
+    "required_next_action": "approve_or_reject_upload",
+    "manifest": {
+      "accepted_preview_rows": 248,
+      "rejected_preview_rows": 2,
+      "publication_tier": "restricted"
+    }
+  }
+}

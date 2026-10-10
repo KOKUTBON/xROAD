@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.8217,
+          41.328
+        ]
+      },
+      "properties": {
+        "crossing_id": "crossing-012",
+        "crossing_name": "East Tirana demo corridor crossing",
+        "crossing_protection_state": "missing refuge",
+        "pedestrian_crossing_priority_score": 77,
+        "public_score_band": "high"
+      }
+    }
+  ]
+}

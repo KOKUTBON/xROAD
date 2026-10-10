@@ -1,0 +1,69 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.8167,
+          41.3265
+        ]
+      },
+      "properties": {
+        "segment_id": "demo-climate-1",
+        "climate_risk_score": 84,
+        "dominant_hazard": "flood",
+        "weather_conditioned_multiplier": 1.8399999999999999
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.8187,
+          41.327
+        ]
+      },
+      "properties": {
+        "segment_id": "demo-climate-2",
+        "climate_risk_score": 56,
+        "dominant_hazard": "heat",
+        "weather_conditioned_multiplier": 1.56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.8207,
+          41.3275
+        ]
+      },
+      "properties": {
+        "segment_id": "demo-climate-3",
+        "climate_risk_score": 37,
+        "dominant_hazard": "wind",
+        "weather_conditioned_multiplier": 1.37
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.8227,
+          41.328
+        ]
+      },
+      "properties": {
+        "segment_id": "demo-climate-4",
+        "climate_risk_score": 18,
+        "dominant_hazard": "snow_ice",
+        "weather_conditioned_multiplier": 1.18
+      }
+    }
+  ]
+}

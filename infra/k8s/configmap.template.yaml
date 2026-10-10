@@ -1,0 +1,62 @@
+# Copy this template to an environment-specific file before applying.
+# Keep secrets out of this ConfigMap; use ExternalSecret, SealedSecret,
+# or a cloud secret manager for credentials and tokens.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: road-risk-config
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-config
+    app.kubernetes.io/part-of: road-risk-platform
+data:
+  # Runtime identity and API settings.
+  ROAD_RISK_API_ENV: "staging"
+  ROAD_RISK_API_ROOT_DIR: "/app"
+  ROAD_RISK_API_AUTH_ENABLED: "true"
+  ROAD_RISK_API_AUTH_PROVIDER: "keycloak"
+  ROAD_RISK_API_AUTH_JWKS_URL: "https://auth.staging.road-risk.example.gov/realms/road-risk/protocol/openid-connect/certs"
+  ROAD_RISK_API_AUTH_AUDIENCE: "road-risk-api"
+  ROAD_RISK_API_AUTH_ISSUER: "https://auth.staging.road-risk.example.gov/realms/road-risk"
+  ROAD_RISK_API_AUTH_CLIENT_ID: "road-risk-api"
+  ROAD_RISK_API_AUTH_ROLE_CLAIM: "realm_access.roles"
+  ROAD_RISK_API_AUTH_ORGANIZATION_CLAIM: "organization_ids"
+  ROAD_RISK_API_AUTH_MUNICIPALITY_CLAIM: "municipality_ids"
+  ROAD_RISK_API_CORS_ALLOWED_ORIGINS: "https://staging.road-risk.example.gov"
+
+  # Object storage metadata. Credentials live in road-risk-secrets.
+  ROAD_RISK_STORAGE_ENDPOINT_URL: "https://s3.staging.road-risk.example.gov"
+  ROAD_RISK_STORAGE_REGION: "eu-south-1"
+  ROAD_RISK_STORAGE_BUCKET: "road-risk-staging"
+  ROAD_RISK_STORAGE_PUBLIC_BUCKET: "road-risk-public-staging"
+  ROAD_RISK_STORAGE_PREFIX: "artifacts"
+  ROAD_RISK_STORAGE_UPLOADS_PREFIX: "uploads"
+  ROAD_RISK_STORAGE_REPORTS_PREFIX: "reports"
+  ROAD_RISK_STORAGE_MANIFESTS_PREFIX: "manifests"
+  ROAD_RISK_STORAGE_USE_SSL: "true"
+  ROAD_RISK_STORAGE_VERIFY_SSL: "true"
+  ROAD_RISK_STORAGE_AUTO_CREATE_BUCKETS: "false"
+
+  # Worker/scheduler non-secret settings.
+  ROAD_RISK_WORKER_CONCURRENCY: "4"
+  ROAD_RISK_WORKER_TIMEZONE: "Europe/Rome"
+  ROAD_RISK_AUTOMATION_PUBLISHED_REFRESH_INTERVAL_S: "86400"
+  ROAD_RISK_AUTOMATION_DASHBOARD_REFRESH_INTERVAL_S: "86400"
+  ROAD_RISK_AUTOMATION_STALE_SOURCE_CHECK_INTERVAL_S: "86400"
+  ROAD_RISK_AUTOMATION_DATA_QUALITY_CHECK_INTERVAL_S: "86400"
+  ROAD_RISK_AUTOMATION_MONTHLY_REPORT_INTERVAL_S: "2592000"
+
+  # Frontend runtime. The web pod talks to the in-cluster API service;
+  # browsers use the same web origin and proxy through /api/backend.
+  ROAD_RISK_WEB_API_BASE_URL: "http://road-risk-api.road-risk.svc.cluster.local"
+  NEXT_PUBLIC_API_BASE_URL: ""
+  NEXT_PUBLIC_ENABLE_DEMO_AUTH: "false"
+  ROAD_RISK_WEB_OIDC_ISSUER: "https://auth.staging.road-risk.example.gov/realms/road-risk"
+  ROAD_RISK_WEB_OIDC_CLIENT_ID: "road-risk-web"
+  ROAD_RISK_WEB_OIDC_REDIRECT_URI: "https://staging.road-risk.example.gov/api/auth/callback"
+
+  # Build metadata. CI/CD should replace these on every deploy.
+  ROAD_RISK_BUILD_SHA: "replace-at-deploy-time"
+  ROAD_RISK_BUILD_REF: "main"
+  ROAD_RISK_BUILD_TIMESTAMP: "replace-at-deploy-time"

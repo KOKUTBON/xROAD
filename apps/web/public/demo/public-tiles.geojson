@@ -1,0 +1,77 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              19.8152,
+              41.325
+            ],
+            [
+              19.8202,
+              41.325
+            ],
+            [
+              19.8202,
+              41.33
+            ],
+            [
+              19.8152,
+              41.33
+            ],
+            [
+              19.8152,
+              41.325
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "tile_score_id": "tile-tirana-001",
+        "tile_public_score_band": "very_high",
+        "tile_max_public_score_index": 91,
+        "corridor_label": "Central Tirana demo corridor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              19.8212,
+              41.324
+            ],
+            [
+              19.8262,
+              41.324
+            ],
+            [
+              19.8262,
+              41.329
+            ],
+            [
+              19.8212,
+              41.329
+            ],
+            [
+              19.8212,
+              41.324
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "tile_score_id": "tile-tirana-002",
+        "tile_public_score_band": "high",
+        "tile_max_public_score_index": 78,
+        "corridor_label": "East Tirana demo corridor"
+      }
+    }
+  ]
+}

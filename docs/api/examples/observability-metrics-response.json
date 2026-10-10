@@ -1,0 +1,26 @@
+{
+  "api_version": "v1",
+  "contract_version": "observability_metrics_v2",
+  "organization_id": "00000000-0000-0000-0000-000000000118",
+  "ingestion_jobs": {
+    "total": 12,
+    "by_status": {
+      "completed": 9,
+      "failed": 1,
+      "queued": 2
+    },
+    "success_rate": 0.9,
+    "failure_rate": 0.1,
+    "row_quality": {
+      "total_rows": 10000,
+      "accepted_rows": 9800,
+      "rejected_rows": 200,
+      "rejection_rate": 0.02
+    }
+  },
+  "api_runtime": {
+    "total_requests": 2048,
+    "total_errors": 3,
+    "error_rate": 0.0015
+  }
+}

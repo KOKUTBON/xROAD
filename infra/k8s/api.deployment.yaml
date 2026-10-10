@@ -1,0 +1,108 @@
+# FastAPI backend deployment.
+#
+#
+# Assumes:
+# - A `road-risk-secrets` Secret in the same namespace provides
+#   `ROAD_RISK_DATABASE_URL`, `ROAD_RISK_STORAGE_ACCESS_KEY_ID`,
+#   `ROAD_RISK_STORAGE_SECRET_ACCESS_KEY`, and OIDC integration values.
+# - A `road-risk-config` ConfigMap provides non-secret env (auth
+#   provider, JWKS URL, storage endpoint).
+# - External Postgres + Redis + object storage endpoints are reachable
+#   from this namespace. They can be managed services or chart-managed
+#   data services; they do not have to run in this namespace.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: road-risk-api
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: road-risk-platform
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: road-risk-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: road-risk-api
+        app.kubernetes.io/component: api
+    spec:
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        - name: road-risk-registry-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: api
+          image: road-risk/api:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: ROAD_RISK_API_ROOT_DIR
+              value: /app
+          envFrom:
+            - configMapRef:
+                name: road-risk-config
+            - secretRef:
+                name: road-risk-secrets
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /v1/observability/readiness
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: road-risk-api
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-api
+spec:
+  selector:
+    app.kubernetes.io/name: road-risk-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+  type: ClusterIP

@@ -1,0 +1,25 @@
+{
+  "api_version": "v1",
+  "city_key": "bari",
+  "map_resource": {
+    "resource_kind": "public_risk_map",
+    "publication_tier": "public",
+    "data": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [[16.862, 41.121], [16.868, 41.126]]
+          },
+          "properties": {
+            "score_band": "very_high",
+            "risk_score": 87.4,
+            "predicted_crashes": 4.2
+          }
+        }
+      ]
+    }
+  }
+}

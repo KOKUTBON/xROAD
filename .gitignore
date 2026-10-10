@@ -1,0 +1,162 @@
+# ---------------------------------------------------------------------------
+# Data — never committed.
+# Everything under data/ is local: source downloads, intermediate tables,
+# trained models, predictions, reports, and runtime state. Only the layout
+# README and the empty folder placeholders are tracked.
+# ---------------------------------------------------------------------------
+data/*
+!data/README.md
+!data/raw/
+!data/staging/
+!data/processed/
+!data/external/
+data/raw/*
+data/staging/*
+data/processed/*
+data/external/*
+data/operations/*
+!data/raw/.gitkeep
+!data/staging/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+
+# Model binaries and columnar data, wherever they appear
+*.joblib
+*.pkl
+*.pickle
+*.parquet
+*.arrow
+*.feather
+*.h5
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Notebook / pipeline run output
+artifacts/
+output/
+cache/
+notebooks/.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# Secrets and environment files
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.jks
+*.keystore
+*.mobileprovision
+credentials/
+secrets/
+tokens/
+private/
+
+# Local runtime state and generated data
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+*.bak
+*.log
+logs/
+tmp/
+temp/
+uploads/
+outputs/
+reports/
+backups/
+dumps/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# ---------------------------------------------------------------------------
+# Node / web
+# ---------------------------------------------------------------------------
+node_modules/
+.next/
+coverage/
+*.tsbuildinfo
+apps/web/public/maplibre/
+apps/web/playwright-report/
+apps/web/test-results/
+docs/ui-baseline/screenshots/
+
+# ---------------------------------------------------------------------------
+# Editors, OS, and local tool configuration
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+.claude/
+.cursor/
+.continue/
+.aider*
+.windsurf/
+.codeium/
+.playwright-cli/
+
+# Sync-conflict duplicates created by cloud-synced folders ("file 2.md")
+* [0-9].*
+* [0-9]
+
+# Local assistant instructions and generated data exports
+.github/agents/
+.codex/
+.gemini/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+apps/web/public/climate/*.geojson
+apps/web/public/climate/*.json
+
+# Dedicated institutional runtime stores are never public source data.
+infra/docker/institution-data/
+
+# Isolated GitHub Pages demo build and export
+apps/web/.pages-build/
+apps/web/out/
+
+# Application routes are source, even when named after runtime directories.
+!apps/web/app/workspace/uploads/
+!apps/web/app/workspace/uploads/**
+!apps/web/app/workspace/reports/
+!apps/web/app/workspace/reports/**
+
+# Local deployment records and private credentials
+.env.local
+.env.production
+*.pem
+*.key
+*.sqlite
+*.sqlite3
+*.db
+/data/private/
+/backups/

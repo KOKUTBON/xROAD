@@ -1,0 +1,51 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    open-pull-requests-limit: 0
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "ci"
+      - "dependencies"
+
+  # Maintain dependencies for Python backend, analytics & workers
+  - package-ecosystem: "pip"
+    open-pull-requests-limit: 0
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "backend"
+      - "dependencies"
+
+  # Maintain dependencies for Next.js web application
+  - package-ecosystem: "npm"
+    open-pull-requests-limit: 0
+    directory: "/apps/web"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "frontend"
+      - "dependencies"
+
+  # Maintain dependencies for Docker container assets
+  - package-ecosystem: "docker"
+    open-pull-requests-limit: 0
+    directory: "/infra/docker"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "infra"
+      - "dependencies"
+
+  # Maintain dependencies for Terraform self-hosted Kubernetes
+  - package-ecosystem: "terraform"
+    open-pull-requests-limit: 0
+    directory: "/infra/terraform/self-hosted-k8s"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "infra"
+      - "dependencies"

@@ -1,0 +1,54 @@
+# Backend API container for the Road Risk product platform.
+#
+# This Dockerfile is intentionally lean: it installs only the API
+# optional-dependencies group from pyproject.toml plus the project source.
+# Analytics-heavy extras (geospatial, ml) are excluded so the API image
+# stays small. Workers can run the same source with broader extras via
+# Dockerfile.worker.
+#
+
+FROM python:3.11-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Minimal system deps:
+# - curl: container healthcheck
+# - libpq5: psycopg runtime
+# - ca-certificates: outbound TLS to MinIO/S3 and OIDC providers
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        curl \
+        ca-certificates \
+        libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY infra/docker/institution-entrypoint.py /usr/local/bin/road-risk-entrypoint.py
+ENTRYPOINT ["python", "/usr/local/bin/road-risk-entrypoint.py"]
+
+WORKDIR /app
+
+# Install the project with the api + analytics-light extras so the API
+# can import road_risk_modeling for published-resource queries.
+COPY pyproject.toml README.md ./
+COPY src ./src
+COPY apps ./apps
+COPY dashboard ./dashboard
+COPY alembic.ini ./alembic.ini
+
+RUN python -m pip install --upgrade pip \
+    && python -m pip install -e '.[api]'
+
+# Non-root user
+RUN useradd --create-home --shell /usr/sbin/nologin appuser \
+    && chown -R appuser:appuser /app
+USER appuser
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=5 \
+    CMD curl --fail --silent http://localhost:8000/healthz || exit 1
+
+CMD ["uvicorn", "apps.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

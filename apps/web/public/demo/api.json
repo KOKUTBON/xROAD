@@ -1,0 +1,1014 @@
+{
+  "/v1/public/cities": {
+    "api_version": "v1",
+    "summary_stats": {
+      "city_count": 1
+    },
+    "cities": [
+      {
+        "city_key": "tirana",
+        "display_name": "Tirana",
+        "prediction_run_label": "tirana_synthetic_demo_v1",
+        "prediction_task": "frequency_baseline",
+        "occurred_years": [
+          2024
+        ],
+        "segment_score_rows": 2,
+        "tile_rows": 2,
+        "tile_size_m": 250,
+        "supports_junction_layer": true,
+        "supports_crossing_layer": true
+      }
+    ]
+  },
+  "/v1/public/cities/tirana/risk-map": {
+    "api_version": "v1",
+    "city": {
+      "city_key": "tirana",
+      "display_name": "Tirana",
+      "prediction_run_label": "tirana_synthetic_demo_v1",
+      "prediction_task": "frequency_baseline",
+      "occurred_years": [
+        2024
+      ],
+      "segment_score_rows": 2,
+      "tile_rows": 2,
+      "tile_size_m": 250,
+      "supports_junction_layer": true,
+      "supports_crossing_layer": true
+    },
+    "filters": {
+      "occurred_year": 2024,
+      "min_score_band": "very_high",
+      "limit": 320
+    },
+    "summary": {
+      "tile_rows": 2,
+      "tiles_high_or_very_high": 2,
+      "tiles_very_high": 1,
+      "predicted_crash_total": 7.1,
+      "tile_size_m": 250
+    },
+    "map_resource": {
+      "resource_name": "public_score_tiles",
+      "view": "public",
+      "contract_version": "public_risk_map_v1",
+      "query": {
+        "occurred_year": 2024,
+        "min_score_band": "very_high",
+        "limit": 320
+      },
+      "source_stats": {
+        "source": "synthetic-demo"
+      },
+      "stats": {
+        "returned_features": 2
+      },
+      "demo_geojson": "/demo/public-tiles.geojson"
+    }
+  },
+  "/v1/public/cities/tirana/interventions": {
+    "api_version": "v1",
+    "city": {
+      "city_key": "tirana",
+      "display_name": "Tirana",
+      "prediction_run_label": "tirana_synthetic_demo_v1",
+      "prediction_task": "frequency_baseline",
+      "occurred_years": [
+        2024,
+        2023
+      ],
+      "segment_score_rows": 2,
+      "tile_rows": 2,
+      "tile_size_m": 250,
+      "supports_junction_layer": true,
+      "supports_crossing_layer": true
+    },
+    "intervention_shortlist": {
+      "top_corridors": [
+        {
+          "corridor_label": "Central Tirana demo corridor",
+          "predicted_crash_total": 4.2,
+          "segment_count": 3,
+          "best_rank": 1
+        }
+      ],
+      "hotspot_tiles": [
+        {
+          "tile_score_id": "tile-tirana-001",
+          "tile_public_score_band": "very_high",
+          "tile_max_public_score_index": 91
+        },
+        {
+          "tile_score_id": "tile-tirana-002",
+          "tile_public_score_band": "high",
+          "tile_max_public_score_index": 78
+        }
+      ]
+    }
+  },
+  "/v1/public/cities/tirana/reports": {
+    "api_version": "v1",
+    "contract_version": "public_reports_v1",
+    "city_key": "tirana",
+    "availability": "available",
+    "rows": [
+      {
+        "report_id": "public-report-001",
+        "title": "Tirana public transparency report",
+        "report_type": "public_transparency",
+        "status": "published",
+        "visibility_tier": "public",
+        "output_format": "pdf",
+        "download_state": "not_persisted",
+        "publication_state": "published",
+        "review_state": "approved",
+        "published_at": "2026-06-01T08:00:00Z"
+      }
+    ]
+  },
+  "/v1/analyst/cities/tirana/risk-map": {
+    "api_version": "v1",
+    "city": {
+      "city_key": "tirana",
+      "display_name": "Tirana",
+      "prediction_run_label": "tirana_synthetic_demo_v1",
+      "prediction_task": "frequency_baseline",
+      "occurred_years": [
+        2024
+      ],
+      "segment_score_rows": 2,
+      "tile_rows": 2,
+      "tile_size_m": 250,
+      "supports_junction_layer": true,
+      "supports_crossing_layer": true
+    },
+    "filters": {
+      "occurred_year": 2024,
+      "min_score_band": "high",
+      "limit": 220,
+      "junction_limit": 120,
+      "crossing_limit": 120
+    },
+    "segment_layer": {
+      "resource_name": "segment_scores",
+      "view": "analyst",
+      "contract_version": "analyst_segment_layer_v1",
+      "query": {
+        "occurred_year": 2024,
+        "min_score_band": "high",
+        "limit": 220
+      },
+      "source_stats": {
+        "source": "synthetic-demo"
+      },
+      "stats": {
+        "returned_features": 1
+      },
+      "demo_geojson": "/demo/segments.geojson"
+    },
+    "segment_details": {
+      "contract_version": "analyst_segment_details_v1",
+      "stats": {
+        "returned_rows": 1
+      },
+      "rows": [
+        {
+          "segment_score_id": "seg-score-001",
+          "segment_id": "seg-001",
+          "segment_label": "Central Tirana demo corridor",
+          "public_score_band": "very_high",
+          "public_score_index": "92",
+          "predicted_crash_count": "4.2",
+          "observed_crash_count": "3",
+          "highway": "primary"
+        }
+      ]
+    },
+    "support_layers": {
+      "junctions": {
+        "availability": "available",
+        "stats": {
+          "returned_features": 1
+        },
+        "resolved_year": 2024,
+        "demo_geojson": "/demo/junctions.geojson"
+      },
+      "crossings": {
+        "availability": "available",
+        "stats": {
+          "returned_features": 1
+        },
+        "ranking_field": "pedestrian_crossing_priority_score",
+        "demo_geojson": "/demo/crossings.geojson"
+      }
+    }
+  },
+  "/v1/scenarios/catalog": {
+    "api_version": "v1",
+    "contract_version": "scenario_catalog_v1",
+    "generated_at_utc": "2026-06-01T08:00:00Z",
+    "stats": {
+      "library_intervention_count": 2,
+      "scenario_bundle_count": 1,
+      "city_count": 1
+    },
+    "cities": [
+      {
+        "city_key": "tirana",
+        "display_name": "Tirana",
+        "prediction_run_label": "tirana_synthetic_demo_v1",
+        "scenario_count": 2,
+        "portfolio_count": 1
+      }
+    ]
+  },
+  "/v1/scenarios/intervention-library": {
+    "api_version": "v1",
+    "contract_version": "intervention_library_v1",
+    "intervention_count": 2,
+    "interventions": [
+      {
+        "intervention_code": "raised_crossing",
+        "label": "Raised crossing",
+        "category": "vru",
+        "description": "Raised pedestrian crossing on high-exposure corridors.",
+        "supported_asset_types": [
+          "crossing"
+        ],
+        "baseline_reduction_bounds": {
+          "low": 0.15,
+          "central": 0.28,
+          "high": 0.4
+        },
+        "default_assumptions": [
+          "Assumes signal compliance",
+          "Existing kerb geometry reusable"
+        ],
+        "rule_summary": [
+          "Applies to high pedestrian exposure segments"
+        ]
+      },
+      {
+        "intervention_code": "signal_retiming",
+        "label": "Signal retiming",
+        "category": "signal",
+        "description": "Phase-timing review at incomplete signal nodes.",
+        "supported_asset_types": [
+          "junction"
+        ],
+        "baseline_reduction_bounds": {
+          "low": 0.1,
+          "central": 0.2,
+          "high": 0.3
+        },
+        "default_assumptions": [
+          "Provider movement data available"
+        ],
+        "rule_summary": [
+          "Applies to signalized junctions with provider coverage"
+        ]
+      }
+    ]
+  },
+  "/v1/scenarios/cities/tirana": {
+    "api_version": "v1",
+    "contract_version": "scenario_city_bundle_v1",
+    "city": {
+      "city_key": "tirana",
+      "display_name": "Tirana",
+      "prediction_run_label": "tirana_synthetic_demo_v1"
+    },
+    "generated_at_utc": "2026-06-01T08:00:00Z",
+    "totals": {
+      "scenario_count": 2,
+      "portfolio_count": 1
+    },
+    "scenarios": [
+      {
+        "scenario_id": "scenario-001",
+        "scenario_rank": 1,
+        "intervention_code": "raised_crossing",
+        "title": "Raised crossing on Central Tirana demo corridor",
+        "target_context_key": "top_corridor",
+        "target_context_label": "Central Tirana demo corridor",
+        "linked_segment_count": 3,
+        "target_asset_count": 2,
+        "expected_crash_reduction": 1.6,
+        "expected_relative_reduction": 0.22,
+        "baseline_predicted_crash_total": 7.1,
+        "counterfactual_predicted_crash_total": 5.5
+      },
+      {
+        "scenario_id": "scenario-002",
+        "scenario_rank": 2,
+        "intervention_code": "signal_retiming",
+        "title": "Signal retiming at Signal 93",
+        "target_context_key": "junction",
+        "target_context_label": "Signal 93",
+        "linked_segment_count": 1,
+        "target_asset_count": 1,
+        "expected_crash_reduction": 0.9,
+        "expected_relative_reduction": 0.13,
+        "baseline_predicted_crash_total": 6.8,
+        "counterfactual_predicted_crash_total": 5.9
+      }
+    ],
+    "portfolios": [
+      {
+        "portfolio_id": "portfolio-001",
+        "portfolio_rank": 1,
+        "scenario_titles": [
+          "Raised crossing on Central Tirana demo corridor"
+        ],
+        "scenario_count": 1,
+        "distinct_segment_count": 3,
+        "overlap_segment_count": 0,
+        "expected_crash_reduction": 1.6,
+        "expected_relative_reduction": 0.22
+      }
+    ]
+  },
+  "/v1/scenarios/drafts": {
+    "api_version": "v1",
+    "contract_version": "scenario_drafts_v1",
+    "organization_id": "org-tirana-demo",
+    "city_key": "tirana",
+    "draft_count": 1,
+    "drafts": [
+      {
+        "scenario_draft_id": "draft-001",
+        "city_key": "tirana",
+        "name": "Raised crossing pilot",
+        "intervention_code": "raised_crossing",
+        "target_context_label": "Central Tirana demo corridor",
+        "cost_class": "medium",
+        "uncertainty": "medium",
+        "status": "validated",
+        "latest_run_id": "run-001",
+        "validation": {
+          "status": "valid",
+          "errors": [],
+          "warnings": []
+        },
+        "updated_at_utc": "2026-06-01T08:30:00Z",
+        "latest_run": {
+          "scenario_run_id": "run-001",
+          "scenario_draft_id": "draft-001",
+          "city_key": "tirana",
+          "name": "Raised crossing pilot",
+          "intervention_code": "raised_crossing",
+          "status": "completed",
+          "baseline_predicted_crash_total": 7.1,
+          "counterfactual_predicted_crash_total": 5.5,
+          "expected_crash_reduction": 1.6,
+          "expected_relative_reduction": 0.22,
+          "confidence": "medium-high",
+          "completed_at_utc": "2026-06-01T08:30:00Z"
+        }
+      }
+    ]
+  },
+  "/v1/scenarios/runs": {
+    "api_version": "v1",
+    "contract_version": "scenario_runs_v1",
+    "organization_id": "org-tirana-demo",
+    "city_key": "tirana",
+    "run_count": 1,
+    "runs": [
+      {
+        "scenario_run_id": "run-001",
+        "scenario_draft_id": "draft-001",
+        "city_key": "tirana",
+        "name": "Raised crossing pilot",
+        "intervention_code": "raised_crossing",
+        "status": "completed",
+        "baseline_predicted_crash_total": 7.1,
+        "counterfactual_predicted_crash_total": 5.5,
+        "expected_crash_reduction": 1.6,
+        "expected_relative_reduction": 0.22,
+        "confidence": "medium-high",
+        "completed_at_utc": "2026-06-01T08:30:00Z"
+      }
+    ]
+  },
+  "/v1/interventions/portfolio": {
+    "api_version": "v1",
+    "contract_version": "intervention_portfolio_v1",
+    "organization_id": "org-tirana-demo",
+    "city_key": "tirana",
+    "availability": "available",
+    "totals": {
+      "portfolio_count": 1,
+      "expected_benefit": 1.6,
+      "by_status": {
+        "planned": 1
+      }
+    },
+    "rows": [
+      {
+        "intervention_id": "int-001",
+        "city_key": "tirana",
+        "scenario_run_id": "run-001",
+        "target_object_id": "seg-001",
+        "target_label": "Central Tirana demo corridor",
+        "intervention_type": "raised_crossing",
+        "cost_class": "medium",
+        "expected_benefit": 1.6,
+        "priority_score": 0.82,
+        "status": "planned",
+        "planned_completion_date": "2026-09-01",
+        "monitoring": {
+          "status": "baseline",
+          "expected_crash_reduction": 1.6,
+          "after_observed_crashes": null
+        }
+      }
+    ]
+  },
+  "/v1/reports/overview": {
+    "api_version": "v1",
+    "contract_version": "reporting_overview_v1",
+    "organization_id": "org-tirana-demo",
+    "selected_city_key": "tirana",
+    "city_catalog": [
+      {
+        "city_key": "tirana",
+        "display_name": "Tirana",
+        "prediction_run_label": "tirana_synthetic_demo_v1",
+        "occurred_years": [
+          2024
+        ]
+      }
+    ],
+    "executive_overview": {
+      "city": {
+        "city_key": "tirana",
+        "display_name": "Tirana",
+        "prediction_run_label": "tirana_synthetic_demo_v1",
+        "prediction_task": "frequency_baseline",
+        "occurred_years": [
+          2024,
+          2023
+        ],
+        "segment_score_rows": 2,
+        "tile_rows": 2,
+        "tile_size_m": 250,
+        "supports_junction_layer": true,
+        "supports_crossing_layer": true
+      },
+      "kpis": {
+        "predicted_crash_total": 7.1,
+        "very_high_risk_tiles": 1,
+        "expected_portfolio_reduction": 1.6,
+        "model_confidence": "medium-high"
+      },
+      "budget_impact": {
+        "recommended_portfolio_title": "Raised crossings and signal timing review",
+        "expected_crash_reduction": 1.6,
+        "expected_relative_reduction": "22%"
+      },
+      "priority_areas": {
+        "top_corridors": [
+          {
+            "corridor_label": "Central Tirana demo corridor",
+            "predicted_crash_total": 4.2,
+            "max_public_score_index": 92,
+            "lead_segment": "Central Tirana demo corridor"
+          }
+        ],
+        "top_actions": [
+          {
+            "priority": 1,
+            "title": "Raised crossing near Central Tirana demo corridor",
+            "rationale": "High pedestrian exposure and weak protection."
+          }
+        ]
+      },
+      "reporting_context": {
+        "signal_summary": {
+          "movements_with_provider_data": 44
+        }
+      }
+    },
+    "report_templates": [
+      {
+        "report_type": "monthly_safety_overview",
+        "label": "Monthly Safety Overview",
+        "audience": "executive",
+        "description": "Executive KPIs and delivery status for the selected municipality.",
+        "required_role": "municipality_viewer",
+        "supported_formats": [
+          "pdf",
+          "markdown"
+        ],
+        "default_format": "pdf"
+      },
+      {
+        "report_type": "technical_hotspot_report",
+        "label": "Technical Hotspot Report",
+        "audience": "analyst",
+        "description": "Analyst-ready hotspot drivers and recommended actions.",
+        "required_role": "analyst",
+        "supported_formats": [
+          "pdf",
+          "csv"
+        ],
+        "default_format": "pdf"
+      },
+      {
+        "report_type": "public_transparency",
+        "label": "Public Transparency Report",
+        "audience": "public",
+        "description": "Citizen-facing safety narrative and publication-safe outputs.",
+        "required_role": "admin",
+        "supported_formats": [
+          "pdf"
+        ],
+        "default_format": "pdf"
+      }
+    ],
+    "report_history": {
+      "rows": [
+        {
+          "report_id": "report-001",
+          "title": "May safety overview",
+          "report_type": "monthly_safety_overview",
+          "status": "generated",
+          "visibility_tier": "internal",
+          "output_format": "pdf",
+          "download_state": "not_persisted",
+          "publication_state": "not_published",
+          "review_state": "reviewed",
+          "lifecycle_actions": [
+            "publish",
+            "archive"
+          ],
+          "generated_at": "2026-06-01T08:30:00Z"
+        }
+      ]
+    }
+  },
+  "/v1/admin/control-center": {
+    "api_version": "v1",
+    "contract_version": "admin_control_center_v1",
+    "organization_id": "org-tirana-demo",
+    "generated_at": "2026-06-01T08:00:00Z",
+    "ingestion_overview": {
+      "total": 2,
+      "by_status": {
+        "validated_ready": 1,
+        "completed": 1
+      },
+      "recent_jobs": [
+        {
+          "id": "job-recent-001",
+          "job_type": "crash_ingestion",
+          "status": "validated_ready",
+          "created_at": "2026-06-01T08:00:00Z"
+        }
+      ]
+    },
+    "artifact_overview": {
+      "total": 4,
+      "by_publication_tier": {
+        "public": 1,
+        "restricted": 3
+      }
+    },
+    "governance_matrix": {
+      "totals": {
+        "data_source_count": 1,
+        "by_governance_status": {
+          "approved": 1
+        },
+        "by_publication_tier": {
+          "restricted": 1
+        }
+      },
+      "rows": [
+        {
+          "id": "source-crashes",
+          "name": "Tirana synthetic demo source",
+          "source_type": "crash_feed",
+          "provider_name": "Synthetic demo provider",
+          "governance_status": "approved",
+          "publication_tier": "restricted",
+          "refresh_frequency": "weekly",
+          "municipality_id": "tirana",
+          "status": "active",
+          "updated_at": "2026-06-01T08:00:00Z"
+        }
+      ]
+    },
+    "automations": {
+      "scheduler_available": true,
+      "entry_count": 1,
+      "entries": [
+        {
+          "name": "published-refresh-daily",
+          "task": "refresh_published_artifacts",
+          "schedule": {
+            "kind": "interval_seconds",
+            "value": 86400
+          },
+          "options": {}
+        }
+      ]
+    },
+    "user_roster": {
+      "totals": {
+        "membership_count": 0,
+        "by_role": {},
+        "municipality_link_count": 1
+      },
+      "memberships": [],
+      "municipality_links": [
+        {
+          "link_id": "municipality-link-tirana",
+          "municipality_id": "tirana",
+          "access_level": "full",
+          "status": "active"
+        }
+      ]
+    },
+    "recent_audit": {
+      "limit": 10,
+      "entries": []
+    }
+  },
+  "/v1/ingestion-jobs/upload-center": {
+    "contract_version": "upload_center_v1",
+    "organization_id": "org-tirana-demo",
+    "municipality_id": "tirana",
+    "supported_formats": [
+      "csv",
+      "geojson",
+      "json",
+      "zip"
+    ],
+    "sources": [
+      {
+        "source_id": "source-crashes",
+        "name": "Tirana synthetic demo source",
+        "source_type": "crash_feed",
+        "provider_name": "Synthetic demo provider",
+        "governance_status": "approved",
+        "publication_tier": "restricted",
+        "status": "active",
+        "municipality_id": "tirana",
+        "required_columns": [
+          "crash_id",
+          "latitude",
+          "longitude"
+        ],
+        "supported_formats": [
+          "csv"
+        ],
+        "upload_enabled": true
+      }
+    ],
+    "jobs": [
+      {
+        "job_id": "job-recent-001",
+        "organization_id": "org-tirana-demo",
+        "municipality_id": "tirana",
+        "source_id": "source-crashes",
+        "job_type": "crash_ingestion",
+        "status": "validated_ready",
+        "source_name": "Tirana synthetic demo source",
+        "validation_outcome": "accepted",
+        "execution_status": "pending",
+        "execution_engine": "celery",
+        "output_artifact_count": 2,
+        "error_count": 0
+      }
+    ]
+  },
+  "/v1/ingestion-jobs/job-upload-001/manifest": {
+    "manifest": {
+      "governance": {
+        "status": "approved",
+        "checks": [
+          {
+            "check": "source_rights",
+            "status": "passed",
+            "message": "Illustrative demo source; no crash records."
+          }
+        ]
+      },
+      "schema": {
+        "format": "csv",
+        "detected_columns": [
+          "crash_id",
+          "latitude",
+          "longitude"
+        ],
+        "missing_required_columns": [],
+        "field_mapping": {
+          "crash_id": "crash_id",
+          "latitude": "latitude",
+          "longitude": "longitude"
+        },
+        "delimiter": ","
+      },
+      "quality": {
+        "invalid_coordinate_count": 0,
+        "duplicate_row_count": 0
+      },
+      "stats": {
+        "validation_status": "validated_ready",
+        "validation_outcome": "accepted",
+        "scanned_row_count": 2,
+        "accepted_preview_rows": 2,
+        "rejected_preview_rows": 0,
+        "invalid_coordinate_count": 0,
+        "duplicate_row_count": 0,
+        "error_count": 0
+      },
+      "preview_rows": [
+        {
+          "row_number": 1,
+          "values": {
+            "crash_id": "A-1",
+            "latitude": 41.12,
+            "longitude": 16.86
+          }
+        }
+      ]
+    }
+  },
+  "/v1/automation/overview": {
+    "api_version": "v1",
+    "contract_version": "automation_overview_v1",
+    "organization_id": "org-tirana-demo",
+    "generated_at": "2026-06-01T08:00:00Z",
+    "schedules": {
+      "scheduler_available": true,
+      "entry_count": 1,
+      "paused_count": 0,
+      "entries": [
+        {
+          "name": "published-refresh-daily",
+          "task": "refresh_published_artifacts",
+          "schedule": {
+            "kind": "interval_seconds",
+            "value": 86400
+          },
+          "paused": false,
+          "policy": {
+            "policy_kind": "published_refresh",
+            "description": "Refresh published maps and reports.",
+            "notification_triggers": [
+              "failure",
+              "stale_source"
+            ]
+          },
+          "notification_channels": [
+            "email_outbox"
+          ],
+          "configuration_source": "environment"
+        }
+      ]
+    },
+    "runs": {
+      "limit": 20,
+      "totals": {
+        "total": 1,
+        "by_status": {
+          "completed": 1
+        },
+        "by_job_type": {
+          "published_refresh": 1
+        }
+      },
+      "rows": [
+        {
+          "job_id": "automation-run-001",
+          "job_type": "published_refresh",
+          "status": "completed",
+          "municipality_id": "tirana",
+          "created_at": "2026-06-01T07:00:00Z",
+          "finished_at": "2026-06-01T07:03:00Z"
+        }
+      ]
+    },
+    "notifications": {
+      "limit": 20,
+      "totals": {
+        "total": 0,
+        "by_action": {}
+      },
+      "rows": []
+    },
+    "stale_sources": {
+      "totals": {
+        "source_count": 1,
+        "stale_count": 0
+      },
+      "stale_sources": []
+    }
+  },
+  "/v1/traffic-operations/cities/tirana/capabilities": {
+    "api_version": "v1",
+    "contract_version": "traffic_operations_capabilities_v1",
+    "city": {
+      "city_key": "tirana",
+      "display_name": "Tirana"
+    },
+    "production_scope": {
+      "status": "v1_supported",
+      "supported_for_v1": true,
+      "reason": "Tirana has VRU intelligence and signal-phase preview artifacts for v1.0."
+    },
+    "feature_flags": {
+      "signal_phase_preview_enabled": true
+    },
+    "ui_policy": {
+      "show_operations_board": true,
+      "show_vru_panels": true,
+      "fetch_vru_summary": true,
+      "fetch_vru_corridors": true,
+      "show_signal_phase_preview": true,
+      "fetch_signal_phase_overview": true,
+      "show_signal_operator_board": true,
+      "allow_signal_write_actions": false,
+      "unsupported_message": "Traffic operations are not enabled for this city."
+    },
+    "release_boundary": {
+      "v1_0_included": [
+        "VRU priority intelligence",
+        "Signal-phase preview board"
+      ],
+      "v1_0_preview": [
+        "Read-only signal-phase operator queue"
+      ],
+      "v1_0_excluded": [
+        "Signal-controller writeback"
+      ],
+      "v1_5_candidates": [
+        "Live dispatch write workflows"
+      ]
+    },
+    "capability_count": 2,
+    "capabilities": [
+      {
+        "capability_id": "vru_priority_intelligence",
+        "label": "VRU priority intelligence",
+        "status": "v1_supported",
+        "enabled": true,
+        "visibility": "internal",
+        "release_stage": "v1.0",
+        "minimum_role": "traffic_engineer",
+        "confidence_label": "medium-high",
+        "governance_label": "restricted",
+        "reason": "VRU feature bundle is available."
+      },
+      {
+        "capability_id": "signal_phase_operator_board",
+        "label": "Signal-phase operator board",
+        "status": "preview",
+        "enabled": true,
+        "visibility": "internal",
+        "release_stage": "v1.0 preview",
+        "minimum_role": "traffic_engineer",
+        "confidence_label": "medium",
+        "governance_label": "restricted",
+        "reason": "Preview is read-only."
+      }
+    ]
+  },
+  "/v1/vru/cities/tirana/summary": {
+    "api_version": "v1",
+    "contract_version": "vru_summary_v1",
+    "city": {
+      "city_key": "tirana",
+      "display_name": "Tirana"
+    },
+    "layer_status": "available",
+    "generated_at_utc": "2026-06-01T08:00:00Z",
+    "stats": {
+      "segment_feature_count": 12,
+      "crossing_feature_count": 5
+    },
+    "planning_highlights": {
+      "top_pedestrian_segment": {
+        "segment_id": "seg-001",
+        "segment_label": "Central Tirana demo corridor",
+        "predicted_crash_count": 4.2,
+        "public_score_index": 92
+      },
+      "top_cyclist_segment": {
+        "segment_id": "seg-002",
+        "segment_label": "East Tirana demo corridor",
+        "predicted_crash_count": 2.8,
+        "public_score_index": 84
+      },
+      "top_crossing_candidate": {
+        "crossing_id": "crossing-012",
+        "crossing_name": "East Tirana demo corridor crossing",
+        "predicted_crash_count": 1.4,
+        "pedestrian_crossing_priority_score": 77
+      }
+    }
+  },
+  "/v1/vru/cities/tirana/top-corridors": {
+    "api_version": "v1",
+    "contract_version": "vru_corridors_v1",
+    "corridor_count": 1,
+    "corridors": [
+      {
+        "corridor_label": "Central Tirana demo corridor",
+        "crossing_count": 4,
+        "protected_crossing_gap_count": 2,
+        "micromobility_corridor_segment_count": 3,
+        "micromobility_gap_score": 0.71,
+        "predicted_crash_total": 4.2
+      }
+    ]
+  },
+  "/v1/signal-phase/cities/tirana/overview": {
+    "api_version": "v1",
+    "contract_version": "signal_phase_overview_v1",
+    "city": {
+      "city_key": "tirana"
+    },
+    "coverage": {
+      "summary": {
+        "movements_with_provider_data": 44
+      }
+    },
+    "target_count": 1,
+    "targets_summary": {
+      "ready_count": 1,
+      "hold_count": 0
+    },
+    "operator_board": {
+      "totals": {
+        "ready_count": 1,
+        "hold_count": 0
+      },
+      "ready_queue_head": [
+        {
+          "junction_id": "junction-093",
+          "action_category": "signal_timing_review",
+          "due_date": "2026-06-07",
+          "due_now": "yes",
+          "action_summary": "Review protected crossing phase timing."
+        }
+      ],
+      "hold_queue_head": []
+    }
+  },
+  "/v1/telematics/events/recent": {
+    "events": [],
+    "demo": true
+  },
+  "/v1/public/institution-config": {
+    "institution_name": "xROAD Tirana Demo",
+    "portal_subtitle": "Tirana, Albania \u00b7 synthetic road-safety demonstration",
+    "brand_primary_color": "#4B2A8C",
+    "country_code": "AL",
+    "administrative_tier": "municipality",
+    "units": {
+      "distance": "km",
+      "speed": "km/h",
+      "currency": "ALL"
+    }
+  },
+  "/v1/recommendations": {
+    "recommendation_count": 1,
+    "recommendations": [
+      {
+        "recommendation_id": "demo-recommendation-001",
+        "segment_label": "Central Tirana demo corridor (synthetic)",
+        "countermeasure_name": "Raised crossing pilot",
+        "object_type": "crossing",
+        "benefit_cost_ratio": 3.2,
+        "expected_annual_crashes_prevented": 0.4,
+        "expected_annual_crashes_prevented_low": 0.2,
+        "expected_annual_crashes_prevented_high": 0.6,
+        "effect_ratio_low": 0.15,
+        "effect_ratio_central": 0.28,
+        "effect_ratio_high": 0.4,
+        "cost_band": "medium",
+        "evidence_source": "Illustrative demo assumption",
+        "evidence_ref": "Synthetic sample; not a validated engineering recommendation",
+        "contributing_factors": [
+          {
+            "label": "Pedestrian exposure",
+            "value": "Illustrative high exposure"
+          }
+        ],
+        "review_state": "proposed",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            19.8187,
+            41.3275
+          ]
+        }
+      }
+    ]
+  }
+}

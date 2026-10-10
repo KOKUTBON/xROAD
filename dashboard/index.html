@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Road Risk Atlas</title>
+    <link rel="icon" href="./brand/road-accidents-risk-modeling-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./brand/road-accidents-risk-modeling-icon-512.png">
+    <link rel="stylesheet" href="./styles.css">
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <img class="project-logo" src="./brand/road-accidents-risk-modeling-icon.svg" alt="Road Accidents Risk Modeling logo" width="64" height="64">
+          <p class="eyebrow">Road Accidents Risk Modeling</p>
+          <h1>Road Risk Atlas</h1>
+          <p class="hero-text">
+            A first public dashboard on top of the published serving layer. It reads the
+            manifest-backed index and renders the latest segment-score or tile surface without
+            touching raw crash data in the browser.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-card">
+            <span class="meta-label">API</span>
+            <strong id="api-origin">Loading</strong>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Mode</span>
+            <strong>Read-only</strong>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Contract</span>
+            <strong id="contract-version">Waiting</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="control-panel card">
+          <div class="section-heading">
+            <h2>Surface Controls</h2>
+            <p>Switch between public tiles and public segments from the same published index.</p>
+          </div>
+
+          <form id="dashboard-form" class="control-grid">
+            <label>
+              <span>Resource</span>
+              <select id="resource-name" name="resource_name"></select>
+            </label>
+            <label>
+              <span>Prediction Run</span>
+              <select id="prediction-run-label" name="prediction_run_label"></select>
+            </label>
+            <label>
+              <span>Year</span>
+              <select id="occurred-year" name="occurred_year"></select>
+            </label>
+            <label id="tile-size-field">
+              <span>Tile Size (m)</span>
+              <select id="tile-size-m" name="tile_size_m"></select>
+            </label>
+            <label>
+              <span>Minimum Band</span>
+              <select id="min-score-band" name="min_score_band">
+                <option value="low">Low+</option>
+                <option value="moderate">Moderate+</option>
+                <option value="high">High+</option>
+                <option value="very_high" selected>Very High</option>
+              </select>
+            </label>
+            <label>
+              <span>Limit</span>
+              <input id="limit" name="limit" type="number" min="1" max="500" value="60">
+            </label>
+            <button class="refresh-button" type="submit">Refresh Surface</button>
+          </form>
+        </section>
+
+        <section class="stats-strip">
+          <article class="stat-card card">
+            <span class="stat-label">Returned</span>
+            <strong id="returned-count">0</strong>
+            <span class="stat-detail" id="matched-count">0 matched</span>
+          </article>
+          <article class="stat-card card">
+            <span class="stat-label">Coverage</span>
+            <strong id="coverage-primary">Waiting</strong>
+            <span class="stat-detail" id="coverage-secondary">Published stats pending</span>
+          </article>
+          <article class="stat-card card">
+            <span class="stat-label">Run</span>
+            <strong id="run-label">Waiting</strong>
+            <span class="stat-detail" id="resource-view">No view selected</span>
+          </article>
+          <article class="stat-card card">
+            <span class="stat-label">Manifest</span>
+            <strong id="manifest-name">Waiting</strong>
+            <span class="stat-detail" id="manifest-updated">No timestamp yet</span>
+          </article>
+        </section>
+
+        <section class="chart-strip">
+          <article class="card chart-card">
+            <div class="section-heading">
+              <h2>Very-High Tiles</h2>
+              <p>Municipality ranking by current very-high tile count.</p>
+            </div>
+            <div id="chart-very-high-tiles" class="mini-chart"></div>
+          </article>
+          <article class="card chart-card">
+            <div class="section-heading">
+              <h2>Top-5 Concentration</h2>
+              <p>Observed crash share captured inside the top 5% ranked segments.</p>
+            </div>
+            <div id="chart-top-share" class="mini-chart"></div>
+          </article>
+          <article class="card chart-card">
+            <div class="section-heading">
+              <h2>Cold-Start Gap</h2>
+              <p>Deviance increase from temporal transfer to cold-start transfer.</p>
+            </div>
+            <div id="chart-transfer-gap" class="mini-chart"></div>
+          </article>
+        </section>
+
+        <section class="dossier-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Sovereign Ministerial Dossier & Research Benchmarks</h2>
+              <p>Download executive vector PDF/A briefings or run exposure-normalized baseline-to-boosting benchmarks.</p>
+            </div>
+            <div class="dossier-actions">
+              <button id="btn-ministerial-dossier" class="dossier-button" type="button">
+                Download Ministerial PDF/A
+              </button>
+              <button id="btn-research-eval" class="benchmark-button" type="button">
+                Run Research Benchmark
+              </button>
+            </div>
+          </div>
+          <div id="dossier-status" class="dossier-status-text" hidden></div>
+          <div id="research-benchmark-results" class="benchmark-container" hidden>
+            <div class="record-table-wrap">
+              <table class="record-table">
+                <thead>
+                  <tr>
+                    <th>Model Architecture</th>
+                    <th>Poisson Deviance</th>
+                    <th>NLL</th>
+                    <th>ROC-AUC</th>
+                    <th>Top-20% Capture</th>
+                  </tr>
+                </thead>
+                <tbody id="benchmark-table-body"></tbody>
+              </table>
+            </div>
+            <div id="benchmark-manifest" class="manifest-text"></div>
+          </div>
+        </section>
+
+        <section class="digital-twin-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>3D Digital Twin & Micro-Simulation</h2>
+              <p>Simulate multi-agent trajectories (IDM physics + VRU yielding) and certify geometric redesign countermeasure safety (SSAM conflict deltas).</p>
+            </div>
+            <div class="twin-actions">
+              <select id="twin-template-select" class="twin-select">
+                <option value="DUTCH_PROTECTED_JUNCTION">Dutch Protected Junction (5m Setback)</option>
+                <option value="TURBO_ROUNDABOUT">Modern Turbo-Roundabout</option>
+                <option value="ROAD_DIET_REFUGE">Road Diet with Refuge Table</option>
+              </select>
+              <button id="btn-run-digital-twin" class="twin-button" type="button">
+                Run 3D Simulation
+              </button>
+            </div>
+          </div>
+          <div id="twin-kpis" class="twin-kpi-strip" hidden>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">Conflict Reduction</span>
+              <span id="twin-kpi-conflicts" class="twin-kpi-val">—</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">VRU Relief</span>
+              <span id="twin-kpi-vru" class="twin-kpi-val">—</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">DRAC Relief</span>
+              <span id="twin-kpi-drac" class="twin-kpi-val">—</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">Verdict</span>
+              <span id="twin-kpi-verdict" class="twin-kpi-val badge-verdict">—</span>
+            </div>
+          </div>
+          <div class="twin-canvas-container">
+            <canvas id="twin-canvas" width="800" height="340"></canvas>
+            <div class="twin-playback-bar">
+              <button id="btn-twin-play" type="button" class="twin-play-btn">Pause</button>
+              <input id="twin-scrubber" type="range" min="0" max="30" step="0.2" value="0" class="twin-slider" />
+              <span id="twin-timer" class="twin-timer-text">0.0s / 30.0s</span>
+            </div>
+          </div>
+          <div id="twin-status" class="dossier-status-text" hidden></div>
+        </section>
+
+        <section class="stream-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Live Telematics & Micromobility Stream</h2>
+              <p>Real-time high-frequency connected vehicle kinematics (harsh braking) and shared micromobility IMU anomalies (sidewalk riding, curb shocks).</p>
+            </div>
+            <div class="stream-actions">
+              <div class="stream-status-pill">
+                <span id="stream-live-dot" class="live-pulse-dot"></span>
+                <span id="stream-status-text">CONNECTING...</span>
+              </div>
+              <button id="btn-stream-inject" class="benchmark-button" type="button">
+                Inject Near-Miss Event
+              </button>
+            </div>
+          </div>
+          <div class="stream-events-container">
+            <div id="stream-events-list" class="stream-events-list">
+              <div class="mini-chart-note">Connecting to real-time telematics stream...</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="forensic-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Incident Reconstruction & Forensic Playback</h2>
+              <p>Micro-second telemetry synchronization, momentum conservation, driver PRT evaluation, and counterfactual collision avoidance.</p>
+            </div>
+            <div class="stream-actions">
+              <select id="forensic-case-select" class="form-select">
+                <option value="CASE-SYN-001">Synthetic Case 001: Transit Bus vs E-Scooter (30 km/h)</option>
+                <option value="CASE-SYN-002">Synthetic Case 002: Passenger Car vs Pedestrian (50 km/h)</option>
+                <option value="CASE-SYN-003">Synthetic Case 003: Commercial Vehicle vs Queued Traffic (70 km/h)</option>
+              </select>
+              <button id="btn-forensic-dossier" class="benchmark-button" type="button">
+                Download Judicial Dossier
+              </button>
+            </div>
+          </div>
+          <div class="twin-kpi-strip">
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">Initial Speed (v₀)</span>
+              <span id="forensic-kpi-v0" class="twin-kpi-val">44.0 km/h</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">Impact Speed (v_imp)</span>
+              <span id="forensic-kpi-vimp" class="twin-kpi-val">26.0 km/h</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">Driver PRT</span>
+              <span id="forensic-kpi-prt" class="twin-kpi-val">1.80 s</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">Energy Dissipated</span>
+              <span id="forensic-kpi-ediss" class="twin-kpi-val">28.6 kJ</span>
+            </div>
+            <div class="twin-kpi-item">
+              <span class="twin-kpi-label">AEB Avoidance</span>
+              <span id="forensic-kpi-aeb" class="twin-kpi-val badge-verdict">PREVENTED (+3.2m)</span>
+            </div>
+          </div>
+          <div class="forensic-matrix-container">
+            <table class="transferability-table" id="forensic-counterfactual-table">
+              <thead>
+                <tr>
+                  <th>Counterfactual Scenario</th>
+                  <th>Outcome</th>
+                  <th>Clearance Margin</th>
+                  <th>Residual Speed</th>
+                  <th>Severe Injury Relief</th>
+                </tr>
+              </thead>
+              <tbody id="forensic-counterfactual-tbody">
+                <tr>
+                  <td>Baseline Observed Crash</td>
+                  <td><span class="badge-tag tag-critical">CRASH OCCURRED</span></td>
+                  <td>0.0 m</td>
+                  <td>26.0 km/h</td>
+                  <td>0.0%</td>
+                </tr>
+                <tr>
+                  <td>C-ITS / AEB Actuation</td>
+                  <td><span class="badge-tag tag-safe">✓ PREVENTED</span></td>
+                  <td>+3.2 m</td>
+                  <td>0.0 km/h</td>
+                  <td>-100.0%</td>
+                </tr>
+                <tr>
+                  <td>Speed Limit Compliance (30 km/h)</td>
+                  <td><span class="badge-tag tag-safe">✓ PREVENTED</span></td>
+                  <td>+1.8 m</td>
+                  <td>0.0 km/h</td>
+                  <td>-100.0%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="forensic-status" class="dossier-status-text" hidden></div>
+        </section>
+
+        <section class="tmc-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Autonomous TMC Incident Response & Playbook Automation</h2>
+              <p id="tmc-caption">Coordinated 5-tier multi-modal actuation under EU AI Act Article 14 Human-in-the-Loop governance.</p>
+            </div>
+            <div class="twin-controls">
+              <label for="tmc-incident-select" class="visually-hidden">Select TMC Incident</label>
+              <select id="tmc-incident-select" class="form-select">
+                <option value="INC-SYN-TMC-001">INC-SYN-TMC-001 (Arterial Corridor KM 12.4 - Shockwave)</option>
+                <option value="INC-SYN-TMC-002">INC-SYN-TMC-002 (Highway Link KM 8.1 - Fog & Rain)</option>
+                <option value="INC-SYN-TMC-003">INC-SYN-TMC-003 (Urban Boulevard - VRU Surge)</option>
+              </select>
+              <button id="btn-tmc-actuate" class="benchmark-button" type="button">
+                ⚡ 1-Click Actuate Playbook
+              </button>
+            </div>
+          </div>
+          <div class="twin-kpis-grid" id="tmc-kpi-container">
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Threat & Playbook</span>
+              <span id="tmc-kpi-threat" class="twin-kpi-val" style="font-size: 13px;">PB_SHOCKWAVE</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">P(Crash) Risk</span>
+              <span id="tmc-kpi-prob" class="twin-kpi-val" style="color: #dc2626;">78%</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Tier 1: Dynamic VSL</span>
+              <span id="tmc-kpi-vsl" class="twin-kpi-val">60 km/h</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Tier 2: Vienna Picto</span>
+              <span id="tmc-kpi-picto" class="twin-kpi-val">A,17 + C,14</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Tier 3: C-ITS DENM</span>
+              <span id="tmc-kpi-denm" class="twin-kpi-val" style="font-size: 12px;">Cause 91 (100ms)</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Tier 4: MDS Geofence</span>
+              <span id="tmc-kpi-mds" class="twin-kpi-val badge-verdict">10 km/h</span>
+            </div>
+          </div>
+          <div class="tmc-matrix-container">
+            <table class="transferability-table" id="tmc-actuation-table">
+              <thead>
+                <tr>
+                  <th>Tier & Subsystem</th>
+                  <th>Direct Command</th>
+                  <th>Core Parameters</th>
+                  <th>EU AI Act Tier</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="tmc-actuation-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+          <div id="tmc-receipt-box" class="dossier-status-text" hidden></div>
+        </section>
+
+        <section class="connected-fleets-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Connected Fleet Geofencing & Cellular V2X (C-V2X PC5/Uu)</h2>
+              <p id="fleet-caption">Real-time In-Vehicle Information (ISO 19321) and digital cockpit HMI alerts for metropolitan fleets.</p>
+            </div>
+            <div class="twin-controls">
+              <label for="fleet-vehicle-select" class="visually-hidden">Select Fleet Vehicle</label>
+              <select id="fleet-vehicle-select" class="form-select">
+                <option value="FLEET-TRANSIT-BUS-12">FLEET-TRANSIT-BUS-12 (Transit Fleet Hybrid Bus)</option>
+                <option value="FLEET-PATROL-UNIT-04">FLEET-PATROL-UNIT-04 (Patrol Interceptor SUV)</option>
+                <option value="FLEET-MAINTENANCE-09">FLEET-MAINTENANCE-09 (Roadway Maintenance Van)</option>
+                <option value="FLEET-CIVILIAN-781">FLEET-CIVILIAN-781 (Connected Passenger Sedan)</option>
+              </select>
+            </div>
+          </div>
+          <div class="twin-kpis-grid" id="fleet-kpi-container">
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Vehicle Unit</span>
+              <span id="fleet-kpi-model" class="twin-kpi-val" style="font-size: 13px;">Iveco Urbanway Hybrid</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Current Speed</span>
+              <span id="fleet-kpi-speed" class="twin-kpi-val">48 km/h</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Mandatory VSL</span>
+              <span id="fleet-kpi-vsl" class="twin-kpi-val" style="color: #dc2626;">60 km/h</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Distance to Hazard</span>
+              <span id="fleet-kpi-dist" class="twin-kpi-val" style="color: #d97706;">413 m</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">C-V2X Reception</span>
+              <span id="fleet-kpi-channel" class="twin-kpi-val badge-verdict">PC5 (5.9 GHz)</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Acoustic / Haptic Alert</span>
+              <span id="fleet-kpi-chime" class="twin-kpi-val" style="font-size: 11px;">ISO 15006 + HAPTIC</span>
+            </div>
+          </div>
+
+          <!-- Cockpit HUD Box -->
+          <div class="cockpit-hud-container" style="margin-top: 16px; padding: 14px; background: #0f172a; border-radius: 8px; border: 1px solid #1e293b; color: #f8fafc;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: monospace; color: #60a5fa; margin-bottom: 6px;">
+              <span>DIGITAL COCKPIT HEADS-UP DISPLAY (HUD)</span>
+              <span id="fleet-hud-hazard-time" style="color: #fbbf24;">T-Hazard: 30.9s</span>
+            </div>
+            <div id="fleet-hud-banner" style="font-size: 15px; font-weight: bold; color: #ffffff;">
+              SLOW DOWN: QUEUE AHEAD 1.2 KM • SPEED LIMIT 60 KM/H (413m)
+            </div>
+            <div id="fleet-lane-guide" style="margin-top: 6px; font-size: 12px; font-family: monospace; font-weight: bold; color: #f59e0b;">
+              TACTICAL GUIDANCE: RIGHT LANE BLOCKED • MERGE LEFT
+            </div>
+          </div>
+
+          <div class="tmc-matrix-container" style="margin-top: 16px;">
+            <table class="transferability-table" id="fleet-telemetry-table">
+              <thead>
+                <tr>
+                  <th>Vehicle ID</th>
+                  <th>Category & Model</th>
+                  <th>Current Speed</th>
+                  <th>Dist to Queue</th>
+                  <th>C-V2X Link</th>
+                  <th>Active In-Vehicle Display</th>
+                </tr>
+              </thead>
+              <tbody id="fleet-telemetry-tbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="incident-coordination-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Dynamic Multi-Incident Conflict & Congestion Spillover Manager</h2>
+              <p id="coordination-caption">LWR shockwave spillover dynamics, detour clash detection, and capacity-constrained flow split optimization.</p>
+            </div>
+            <div class="twin-controls">
+              <label for="coordination-scenario-select" class="visually-hidden">Select Multi-Incident Scenario</label>
+              <select id="coordination-scenario-select" class="form-select">
+                <option value="scenario_ring_road_bottleneck">Ring Corridor & Arterial Bottleneck</option>
+                <option value="scenario_vru_surge_interchange">Urban Boulevard VRU Surge & Transit Interchange</option>
+              </select>
+            </div>
+          </div>
+          <div class="twin-kpis-grid" id="coordination-kpi-container">
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Shockwave Velocity (w)</span>
+              <span id="coord-kpi-wave" class="twin-kpi-val" style="color: #dc2626;">-18.4 km/h</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Time to Upstream Junction</span>
+              <span id="coord-kpi-reach" class="twin-kpi-val" style="color: #d97706;">6.8 min</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Detour Clashes Intercepted</span>
+              <span id="coord-kpi-conflicts" class="twin-kpi-val" style="color: #9333ea;">1 Conflict</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Spillover Risk Tier</span>
+              <span id="coord-kpi-tier" class="twin-kpi-val badge-verdict" style="background: #fee2e2; color: #991b1b;">CRITICAL_IMMINENT</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Delay Hours Saved</span>
+              <span id="coord-kpi-delay" class="twin-kpi-val" style="color: #059669;">+728 veh·h</span>
+            </div>
+            <div class="twin-kpi-card">
+              <span class="twin-kpi-lbl">Secondary Crash Reduction</span>
+              <span id="coord-kpi-safety" class="twin-kpi-val" style="color: #059669;">-43.1%</span>
+            </div>
+          </div>
+
+          <!-- Conflict & Resolution Notice -->
+          <div id="coord-conflict-box" style="margin-top: 16px; padding: 14px; background: #fef2f2; border-radius: 8px; border: 1px solid #fecaca; color: #991b1b;">
+            <div style="font-weight: bold; font-size: 13px; margin-bottom: 4px;" id="coord-conflict-title">
+              DIRECT COLLISION COURSE DETECTED (CONF-001)
+            </div>
+            <div style="font-size: 12px; color: #7f1d1d;" id="coord-conflict-desc">
+              Detour for incident INC-BA-SS16-01 routes traffic directly onto Via Gentile, which is currently impaired by INC-BA-GENTILE-02 with 50% capacity reduction.
+            </div>
+            <div style="margin-top: 6px; font-size: 12px; font-weight: bold; color: #065f46;" id="coord-remedy-desc">
+              Automated Remedy: Sever detour routing to Via Gentile; redistribute diversion flow to Bypass Japigia and Lungomare Trieste.
+            </div>
+          </div>
+
+          <!-- Flow Split Allocation Table -->
+          <div class="tmc-matrix-container" style="margin-top: 16px;">
+            <table class="transferability-table" id="coordination-splits-table">
+              <thead>
+                <tr>
+                  <th>Corridor Name</th>
+                  <th>Recommended Split %</th>
+                  <th>Allocated Flow</th>
+                  <th>Max Capacity</th>
+                  <th>Expected Speed</th>
+                  <th>VMS Variable Sign Guidance</th>
+                </tr>
+              </thead>
+              <tbody id="coordination-splits-tbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="map-panel card">
+          <div class="section-heading split">
+            <div>
+              <h2>Overview Surface</h2>
+              <p id="map-caption">Loading published resources.</p>
+            </div>
+            <div class="legend" aria-label="Score legend">
+              <span class="legend-chip legend-very-high">Very High</span>
+              <span class="legend-chip legend-high">High</span>
+              <span class="legend-chip legend-moderate">Moderate</span>
+              <span class="legend-chip legend-low">Low</span>
+            </div>
+          </div>
+
+          <div class="map-frame">
+            <svg id="surface-map" viewBox="0 0 1000 640" role="img" aria-label="Risk surface map"></svg>
+            <div id="map-empty" class="map-empty" hidden>No features returned for the current filter.</div>
+          </div>
+        </section>
+
+        <section class="side-column">
+          <article class="card">
+            <div class="section-heading">
+              <h2>Published Runs</h2>
+              <p>Latest municipality surfaces currently available in the published index.</p>
+            </div>
+            <div id="run-comparison-list" class="run-comparison-list"></div>
+          </article>
+
+          <article class="card">
+            <div class="section-heading">
+              <h2>Transferability Snapshot</h2>
+              <p>Cross-jurisdiction frequency results from the municipality context-v2 benchmark.</p>
+            </div>
+            <div class="record-table-wrap">
+              <table class="record-table">
+                <thead>
+                  <tr>
+                    <th>City</th>
+                    <th>Temporal</th>
+                    <th>Cold-start</th>
+                    <th>History-free</th>
+                  </tr>
+                </thead>
+                <tbody id="transferability-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-heading">
+              <h2>Intervention Shortlist</h2>
+              <p>Server-side shortlist of corridors and hotspot tiles for the selected city.</p>
+            </div>
+            <div class="shortlist-grid">
+              <div>
+                <h3 class="shortlist-heading">Top Corridors</h3>
+                <div id="shortlist-corridors" class="shortlist-list"></div>
+              </div>
+              <div>
+                <h3 class="shortlist-heading">Hotspot Tiles</h3>
+                <div id="shortlist-tiles" class="shortlist-list"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-heading">
+              <h2>Intervention Detail</h2>
+              <p>Focused segment-level detail for the currently selected corridor or hotspot tile.</p>
+            </div>
+            <div id="intervention-detail" class="intervention-detail-empty">
+              Select a corridor or hotspot tile from the shortlist to focus the surface and expand the top supporting segments.
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-heading">
+              <h2>Top Records</h2>
+              <p>Highest-ranked published features in the current filtered response.</p>
+            </div>
+            <div class="record-table-wrap">
+              <table class="record-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>ID</th>
+                    <th>Band</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody id="record-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-heading">
+              <h2>Selection</h2>
+              <p>Feature details from the current public contract.</p>
+            </div>
+            <pre id="feature-details" class="feature-details">Select a row or map feature.</pre>
+          </article>
+
+          <article class="card">
+            <div class="section-heading">
+              <h2>Request Trace</h2>
+              <p>The exact resource query the dashboard is using against the local read-only API.</p>
+            </div>
+            <pre id="request-trace" class="feature-details">Waiting for first request.</pre>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

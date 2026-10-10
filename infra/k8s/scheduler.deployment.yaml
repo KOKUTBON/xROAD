@@ -1,0 +1,69 @@
+# Celery beat scheduler deployment.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: road-risk-scheduler
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-scheduler
+    app.kubernetes.io/component: scheduler
+    app.kubernetes.io/part-of: road-risk-platform
+spec:
+  # Exactly one beat instance; running two would dispatch every
+  # scheduled task twice.
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: road-risk-scheduler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: road-risk-scheduler
+        app.kubernetes.io/component: scheduler
+    spec:
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        - name: road-risk-registry-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: scheduler
+          image: road-risk/worker:dev
+          imagePullPolicy: IfNotPresent
+          args:
+            - "celery"
+            - "-A"
+            - "services.scheduler.main"
+            - "beat"
+            - "--loglevel=INFO"
+            - "--schedule=/tmp/celerybeat-schedule"
+          envFrom:
+            - configMapRef:
+                name: road-risk-config
+            - secretRef:
+                name: road-risk-secrets
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

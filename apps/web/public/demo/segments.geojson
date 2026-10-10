@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            19.8152,
+            41.325
+          ],
+          [
+            19.8182,
+            41.3275
+          ],
+          [
+            19.8212,
+            41.3285
+          ]
+        ]
+      },
+      "properties": {
+        "segment_score_id": "seg-score-001",
+        "segment_id": "seg-001",
+        "segment_label": "Central Tirana demo corridor",
+        "public_score_band": "very_high",
+        "public_score_index": 92,
+        "predicted_crash_count": 4.2
+      }
+    }
+  ]
+}

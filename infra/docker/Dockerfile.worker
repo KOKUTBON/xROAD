@@ -1,0 +1,46 @@
+# Celery worker runtime for the Road Risk product platform.
+#
+# This image now ships the real worker entrypoint added under #86. The
+# scheduler container (services/scheduler) reuses this image and
+# overrides CMD via docker compose, so we only need one image to cover
+# both the worker fleet and the beat scheduler.
+#
+
+FROM python:3.11-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY infra/docker/institution-entrypoint.py /usr/local/bin/road-risk-entrypoint.py
+ENTRYPOINT ["python", "/usr/local/bin/road-risk-entrypoint.py"]
+
+WORKDIR /app
+
+COPY pyproject.toml README.md ./
+COPY src ./src
+COPY apps ./apps
+COPY services ./services
+
+# Worker image installs the `worker` extras (celery + redis client) on
+# top of the API extras so worker code paths can call back into shared
+# API repositories and the road_risk_modeling engine.
+RUN python -m pip install --upgrade pip \
+    && python -m pip install -e '.[api,worker,analytics]'
+
+RUN useradd --create-home --shell /usr/sbin/nologin appuser \
+    && chown -R appuser:appuser /app
+USER appuser
+
+# Default CMD runs the worker. The scheduler service in docker compose
+# overrides this to launch celery-beat against the same image.
+CMD ["celery", "-A", "services.workers.celery_app", "worker", \
+     "--loglevel=INFO", \
+     "--queues=road_risk_default,road_risk_ingestion,road_risk_published_refresh,road_risk_reports"]

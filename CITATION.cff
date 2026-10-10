@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software or its outputs, please cite it as below."
+title: "Road Accidents Risk Modeling platform"
+abstract: >-
+  A reusable geospatial road-accident risk-modeling platform that scores and
+  explains collision risk at segment, junction, and crossing level to help road
+  authorities prioritise safety interventions (Safe System / Vision Zero),
+  applicable across cities and countries.
+type: software
+authors:
+  - family-names: Doda
+    given-names: Rei
+license: Apache-2.0
+repository-code: "https://github.com/KOKUTBON/xROAD"
+url: "https://github.com/KOKUTBON/xROAD"
+version: 1.0.0
+date-released: "2026-06-04"
+keywords:
+  - road safety
+  - crash risk modeling
+  - geospatial
+  - Safe System
+  - Vision Zero
+  - vulnerable road users
+  - transferability
+  - open data

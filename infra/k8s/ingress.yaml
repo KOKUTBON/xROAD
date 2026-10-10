@@ -1,0 +1,46 @@
+# Default self-hosted ingress for nginx-ingress + cert-manager.
+# Replace hosts and issuer before applying to staging or production.
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: road-risk-platform
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-platform
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/part-of: road-risk-platform
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - staging.road-risk.example.gov
+        - api.staging.road-risk.example.gov
+      secretName: road-risk-platform-tls
+  rules:
+    - host: staging.road-risk.example.gov
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: road-risk-web
+                port:
+                  name: http
+    - host: api.staging.road-risk.example.gov
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: road-risk-api
+                port:
+                  name: http

@@ -1,0 +1,68 @@
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+.coverage
+build/
+dist/
+*.egg-info/
+
+# Large analytics artifacts that should never enter the API/worker image.
+data/raw/
+data/staging/
+data/processed/
+data/external/
+data/models/
+data/reporting/
+data/planning/
+data/published_index/
+data/dashboard/
+data/quality/
+data/registry/
+data/prediction_store/
+data/aggregates/
+data/matches/
+data/segments/
+data/node_objects/
+data/node_matches/
+data/node_aggregates/
+data/conflict_zones/
+data/movement_objects/
+data/signal_phase_records/
+notebooks/
+
+# Local cache
+cache/
+
+# Git / CI metadata not needed inside the image
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Editor / OS files
+.idea/
+.vscode/
+.DS_Store
+
+# Never include deployment secrets in any image build context.
+**/.env
+**/.env.*
+**/secrets/
+**/private/
+**/*.key
+**/*.pem
+
+**/institution-data/
+
+# Generated demo exports and browser reports are never image inputs.
+apps/web/.pages-build/
+apps/web/out/
+apps/web/test-results/
+apps/web/playwright-report/

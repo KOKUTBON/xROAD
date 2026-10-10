@@ -1,0 +1,14 @@
+{
+	auto_https disable_redirects
+	admin off
+}
+
+https://{$ROAD_RISK_HOSTNAME} {
+	tls /run/secrets/tls_certificate /run/secrets/tls_private_key
+	header Strict-Transport-Security "max-age=31536000"
+	# Discard client-supplied forwarding metadata at the sole public entry point.
+	request_header -X-Forwarded-For
+	request_header -X-Forwarded-Host
+	request_header -X-Forwarded-Proto
+	reverse_proxy web:3000
+}

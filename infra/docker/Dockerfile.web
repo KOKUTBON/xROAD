@@ -1,0 +1,74 @@
+# Next.js runtime image for the Road Risk frontend shell.
+#
+
+FROM node:24-alpine AS deps
+
+WORKDIR /app/apps/web
+
+COPY apps/web/package.json apps/web/package-lock.json ./
+
+RUN npm ci
+
+FROM node:24-alpine AS builder
+
+WORKDIR /app
+
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY apps/web ./apps/web
+
+WORKDIR /app/apps/web
+
+# NEXT_PUBLIC_API_BASE_URL is inlined at build time so the client bundle knows
+# where to reach the API. (Demo auth is intentionally NOT enabled here — the
+# isDemoAuthEnabled() guard disables it in production builds; use the `dev`
+# target below for a demo-login-capable container.)
+ARG NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+
+RUN npm run build
+
+# Demo/dev target: runs `next dev` (NODE_ENV=development) so demo sign-in is
+# allowed by isDemoAuthEnabled(). For local demos only — never deploy this.
+FROM node:24-alpine AS dev
+
+WORKDIR /app/apps/web
+
+ENV NODE_ENV=development
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY --from=deps /app/apps/web/node_modules ./node_modules
+COPY apps/web ./
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
+
+FROM node:24-alpine AS runner
+
+WORKDIR /app/apps/web
+
+COPY infra/docker/institution-web-entrypoint.mjs /usr/local/bin/road-risk-web-entrypoint.mjs
+ENTRYPOINT ["node", "/usr/local/bin/road-risk-web-entrypoint.mjs"]
+
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+COPY --from=deps /app/apps/web/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/apps/web/package.json ./package.json
+COPY --chown=node:node --from=builder /app/apps/web/next.config.mjs ./next.config.mjs
+COPY --chown=node:node --from=builder /app/apps/web/public ./public
+COPY --chown=node:node --from=builder /app/apps/web/.next ./.next
+
+USER node
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=5 \
+    CMD wget --quiet --spider http://localhost:3000/ || exit 1
+
+CMD ["npm", "run", "start"]

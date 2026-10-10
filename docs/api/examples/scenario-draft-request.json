@@ -1,0 +1,19 @@
+{
+  "organization_id": "00000000-0000-0000-0000-000000000118",
+  "city_key": "bari",
+  "name": "Raised crossing package for school corridor",
+  "intervention_code": "raised_crossing",
+  "target_context_key": "school_corridor_via_example",
+  "target_context_label": "Via Example school corridor",
+  "target_asset_ids": ["segment-score-001", "crossing-014"],
+  "parameters": {
+    "speed_reduction_kmh": 8,
+    "implementation_months": 4
+  },
+  "assumptions": [
+    "Existing pedestrian exposure remains stable",
+    "Signal timing unchanged"
+  ],
+  "cost_class": "medium",
+  "uncertainty": "medium"
+}

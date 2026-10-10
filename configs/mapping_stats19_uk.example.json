@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_id": "uk_stats19_national",
+  "country_code": "GB",
+  "source_system": "dft_stats19",
+  "id_column": "collision_reference",
+  "datetime_mapping": {
+    "date_column": "date",
+    "date_format": "%d/%m/%Y",
+    "time_column": "time",
+    "time_format": "%H:%M"
+  },
+  "spatial_mapping": {
+    "x_column": "location_easting_osgr",
+    "y_column": "location_northing_osgr",
+    "native_crs": "EPSG:27700",
+    "bounding_box": [-8.5, 49.8, 1.8, 60.9]
+  },
+  "severity_mapping": {
+    "severity_column": "collision_severity",
+    "severity_crosswalk": {
+      "1": { "fatalities": 1, "injuries": 0, "severity_level": "fatal" },
+      "2": { "fatalities": 0, "injuries": 1, "severity_level": "serious" },
+      "3": { "fatalities": 0, "injuries": 1, "severity_level": "slight" }
+    }
+  },
+  "administrative_mapping": {
+    "region_column": "police_force",
+    "city_code_column": "local_authority_ons_district"
+  },
+  "roadway_type_crosswalk": {
+    "column": "road_type",
+    "mapping": {
+      "1": "roundabout",
+      "2": "one_way_street",
+      "3": "dual_carriageway",
+      "6": "single_carriageway",
+      "7": "slip_road"
+    }
+  },
+  "light_condition_crosswalk": {
+    "column": "light_conditions",
+    "mapping": {
+      "1": "daylight",
+      "4": "darkness_lights_lit",
+      "5": "darkness_lights_unlit",
+      "6": "darkness_no_lights"
+    }
+  },
+  "weather_crosswalk": {
+    "column": "weather_conditions",
+    "mapping": {
+      "1": "fine_no_high_winds",
+      "2": "raining_no_high_winds",
+      "3": "snowing_no_high_winds",
+      "4": "fine_high_winds",
+      "5": "raining_high_winds",
+      "8": "fog_or_mist"
+    }
+  },
+  "extra_columns": [
+    "speed_limit",
+    "junction_detail",
+    "pedestrian_crossing_human_control"
+  ]
+}

@@ -1,0 +1,217 @@
+# Base Docker Compose stack for the Road Risk product platform.
+#
+# This stack runs the FastAPI backend (apps/api) alongside the persistent
+# infrastructure required by Production Foundation work (Postgres+PostGIS,
+# Redis, MinIO). Worker and web services now point at their real runtime
+# shells so the same compose file can exercise the full product frame
+# locally without a second restructuring pass.
+#
+#
+# Quick start:
+#   cp infra/docker/.env.example infra/docker/.env
+#   docker compose -f infra/docker/docker-compose.yml up --build api
+#
+# Compose schema versioning is intentionally omitted to align with the
+# Compose Specification (no top-level `version`).
+
+name: road-risk
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: road-risk-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-road_risk}
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-road_risk}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: road-risk-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_HOST_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: road-risk-minio
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "${MINIO_API_HOST_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.api
+    image: road-risk/api:dev
+    container_name: road-risk-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      ROAD_RISK_API_ROOT_DIR: /app
+      ROAD_RISK_API_ENV: ${ROAD_RISK_API_ENV:-local}
+      ROAD_RISK_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-road_risk}
+      ROAD_RISK_API_AUTH_ENABLED: ${ROAD_RISK_API_AUTH_ENABLED:-false}
+      ROAD_RISK_STORAGE_ENDPOINT_URL: http://minio:9000
+      ROAD_RISK_STORAGE_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minioadmin}
+      ROAD_RISK_STORAGE_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      ROAD_RISK_STORAGE_BUCKET: ${ROAD_RISK_STORAGE_BUCKET:-road-risk}
+      ROAD_RISK_STORAGE_USE_SSL: "false"
+      ROAD_RISK_STORAGE_VERIFY_SSL: "false"
+      ROAD_RISK_STORAGE_AUTO_CREATE_BUCKETS: "true"
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_BUILD_SHA: ${ROAD_RISK_BUILD_SHA:-}
+      ROAD_RISK_BUILD_REF: ${ROAD_RISK_BUILD_REF:-}
+      ROAD_RISK_BUILD_TIMESTAMP: ${ROAD_RISK_BUILD_TIMESTAMP:-}
+    volumes:
+      - ../../data:/app/data:ro
+    ports:
+      - "${API_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.worker
+    image: road-risk/worker:dev
+    container_name: road-risk-worker
+    # Real Celery worker added under #86. Profile-gated so
+    # `docker compose up` of just the API does not require Redis-backed
+    # task consumption.
+    profiles: ["worker", "all"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_WORKER_RESULT_BACKEND: redis://redis:6379/1
+      ROAD_RISK_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-road_risk}
+      ROAD_RISK_WORKER_CONCURRENCY: ${ROAD_RISK_WORKER_CONCURRENCY:-4}
+      ROAD_RISK_STORAGE_ENDPOINT_URL: http://minio:9000
+      ROAD_RISK_STORAGE_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minioadmin}
+      ROAD_RISK_STORAGE_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      ROAD_RISK_STORAGE_BUCKET: ${ROAD_RISK_STORAGE_BUCKET:-road-risk}
+      ROAD_RISK_STORAGE_USE_SSL: "false"
+      ROAD_RISK_STORAGE_VERIFY_SSL: "false"
+      ROAD_RISK_STORAGE_AUTO_CREATE_BUCKETS: "true"
+    volumes:
+      - ../../data:/app/data:ro
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A services.workers.celery_app inspect ping -d celery@$$HOSTNAME --timeout 10 || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+    restart: unless-stopped
+
+  scheduler:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.worker
+    image: road-risk/worker:dev
+    container_name: road-risk-scheduler
+    # Celery beat scheduler. Reuses the worker image and overrides CMD.
+    profiles: ["scheduler", "all"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      worker:
+        condition: service_started
+    environment:
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_WORKER_RESULT_BACKEND: redis://redis:6379/1
+      ROAD_RISK_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-road_risk}
+    command:
+      - celery
+      - -A
+      - services.scheduler.main
+      - beat
+      - --loglevel=INFO
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web
+      args:
+        # Bake the API base URL into the client bundle (production build).
+        NEXT_PUBLIC_API_BASE_URL: "${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}"
+    image: road-risk/web:dev
+    container_name: road-risk-web
+    profiles: ["web", "all"]
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:${API_HOST_PORT:-8000}}
+    ports:
+      - "${WEB_HOST_PORT:-3000}:3000"
+    restart: unless-stopped
+
+  # Demo-login-capable frontend (runs `next dev` so demo sign-in is allowed).
+  # Local demos only. Start with: docker compose --profile demo up web-dev
+  web-dev:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web
+      target: dev
+    image: road-risk/web:demo
+    container_name: road-risk-web-dev
+    profiles: ["demo"]
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_ENABLE_DEMO_AUTH: "true"
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:${API_HOST_PORT:-8000}"
+      ROAD_RISK_WEB_API_BASE_URL: "http://api:8000"
+    ports:
+      - "${WEB_HOST_PORT:-3000}:3000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data: {}
+  redis_data: {}
+  minio_data: {}

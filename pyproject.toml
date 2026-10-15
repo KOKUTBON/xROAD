@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "road-accidents-risk-modeling"
+version = "0.1.0"
+description = "Geospatial road safety analytics, crash-risk prediction, hotspot mapping, and municipal decision support."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Rei Doda" },
+]
+keywords = [
+  "road safety",
+  "crash prediction",
+  "accident hotspot mapping",
+  "geospatial analytics",
+  "machine learning",
+  "traffic safety",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Government",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = ["pycountry>=24.6.1"]
+
+[project.optional-dependencies]
+analytics = [
+  "duckdb",
+  "pandas",
+  "pyarrow",
+]
+geospatial = [
+  "folium",
+  "geopandas",
+  "osmnx",
+  "pyogrio",
+  "pyproj",
+  "shapely",
+]
+ml = [
+  "pandas",
+  "scikit-learn",
+]
+api = [
+  "pyproj>=3.6",
+  "alembic",
+  "boto3",
+  "fastapi",
+  "openpyxl",
+  "pydantic-settings",
+  "PyJWT[crypto]>=2.12.1",
+  "psycopg[binary]",
+  "sqlalchemy",
+  "uvicorn",
+]
+worker = [
+  "celery[redis]",
+]
+dev = [
+  "httpx",
+  "mypy",
+  "pytest",
+  "ruff",
+]
+
+[project.scripts]
+road-risk = "road_risk_modeling.cli:main"
+
+[project.urls]
+Homepage = "https://kokutbon.github.io/xROAD/"
+Repository = "https://github.com/KOKUTBON/xROAD"
+Documentation = "https://github.com/KOKUTBON/xROAD#readme"
+Issues = "https://github.com/KOKUTBON/xROAD/issues"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+road_risk_modeling = ["reference_data/*.csv", "reference_data/*.yaml"]

@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Public recommendation API schema version; not an authentication credential"
+regexTarget = "match"
+regexes = ['recommendations_api_v1']

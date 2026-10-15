@@ -1,0 +1,10 @@
+kubeconfig_path = "~/.kube/config"
+kube_context    = "municipal-staging"
+
+environment = "staging"
+namespace   = "road-risk"
+owner_label = "municipal-platform"
+
+install_ingress_nginx     = true
+install_cert_manager      = true
+install_external_secrets  = true

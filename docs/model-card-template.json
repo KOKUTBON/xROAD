@@ -1,0 +1,9 @@
+{
+  "intended_use": "Describe supported users, decisions, geography, and prediction horizon.",
+  "training_data": "List versioned training artifacts and relevant inclusion or exclusion rules.",
+  "metrics": {
+    "metric_name": "Report holdout value and evaluation split."
+  },
+  "limitations": "State known failure modes, unsupported uses, and monitoring constraints.",
+  "ethics_notes": "Document affected groups, review requirements, and publication safeguards."
+}

@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.8187,
+          41.3275
+        ]
+      },
+      "properties": {
+        "node_object_id": "node-093",
+        "junction_id": "junction-093",
+        "name": "Signal 93",
+        "node_role": "signalized_junction",
+        "public_score_band": "high",
+        "public_score_index": 83
+      }
+    }
+  ]
+}

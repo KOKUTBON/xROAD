@@ -1,0 +1,35 @@
+# Generic Declarative Crash Mapping Configuration (TOML)
+# For municipal traffic departments, police precincts, or regional authorities
+
+schema_id = "municipal_crashes_generic"
+country_code = "US"
+source_system = "city_dot_open_data"
+id_column = "incident_id"
+extra_columns = ["vehicle_count", "primary_factor", "street_name"]
+
+[datetime_mapping]
+datetime_column = "crash_timestamp"
+datetime_format = "%Y-%m-%d %H:%M:%S"
+
+[spatial_mapping]
+latitude_column = "latitude"
+longitude_column = "longitude"
+native_crs = "EPSG:4326"
+
+[severity_mapping]
+fatalities_column = "number_of_fatalities"
+injuries_column = "number_of_injuries"
+default_severity_level = "injury"
+
+[administrative_mapping]
+region_column = "state"
+province_column = "county"
+city_name_column = "city"
+
+[roadway_type_crosswalk]
+column = "road_classification"
+mapping = { "arterial" = "arterial", "local" = "local_street", "freeway" = "highway" }
+
+[light_condition_crosswalk]
+column = "lighting"
+mapping = { "day" = "daylight", "night_lit" = "night_lighting_on", "night_dark" = "night_no_lighting" }

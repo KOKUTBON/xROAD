@@ -1,0 +1,66 @@
+name: Prepare GitHub Pages demo
+
+# Never publishes on push. Manually opt in when you are ready.
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish this demo to GitHub Pages
+        type: boolean
+        default: false
+      base_path:
+        description: Repository path (empty for a custom domain)
+        type: string
+        default: /xROAD
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: python tools/security_release_checks.py --summary
+        working-directory: .
+      - run: npm ci
+      - run: npm run typecheck && npm test
+      - run: npm run check:demo-data
+      - run: npm run build:demo
+        env:
+          PAGES_BASE_PATH: ${{ inputs.base_path }}
+      - run: npx playwright install --with-deps chromium
+        if: inputs.base_path == '/xROAD'
+      - run: npm run test:demo
+        if: inputs.base_path == '/xROAD'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: static-demo-review
+          path: apps/web/out
+          include-hidden-files: true
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
+        if: inputs.publish
+        with:
+          path: apps/web/out
+  deploy:
+    if: inputs.publish
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
+      - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
+        id: deployment

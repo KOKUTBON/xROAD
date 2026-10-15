@@ -1,0 +1,55 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: road-risk-api
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-api
+    app.kubernetes.io/part-of: road-risk-platform
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: road-risk-api
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: road-risk-worker
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-worker
+    app.kubernetes.io/part-of: road-risk-platform
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: road-risk-worker
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: road-risk-web
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-web
+    app.kubernetes.io/part-of: road-risk-platform
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: road-risk-web
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: road-risk-scheduler
+  namespace: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk-scheduler
+    app.kubernetes.io/part-of: road-risk-platform
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: road-risk-scheduler

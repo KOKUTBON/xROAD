@@ -1,0 +1,241 @@
+# ==============================================================================
+# Turnkey Institutional Production Docker Compose Stack
+# ==============================================================================
+# Dedicated deployment stack for national transport ministries, highway agencies,
+# police precincts, and municipal road-safety authorities.
+#
+# Usage:
+#   1. Copy environment file:
+#      cp infra/docker/.env.institution.example infra/docker/.env.institution
+#   2. Provision secret/TLS files and configure branding, hostname, and SSO.
+#      See docs/institutional-deployment-guide.md before launch.
+#   3. Launch the complete stack:
+#      docker compose --env-file infra/docker/.env.institution -f infra/docker/docker-compose.institution.yml up -d
+# ==============================================================================
+
+name: ${ROAD_RISK_DEPLOYMENT_NAME:?Set a unique institutional deployment name}
+
+services:
+  postgres:
+    networks: [backend]
+    image: postgis/postgis:16-3.4-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-roadrisk_admin}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: ${POSTGRES_DB:-road_risk_production}
+    secrets: [postgres_password]
+    volumes:
+      - postgres_inst_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-roadrisk_admin} -d ${POSTGRES_DB:-road_risk_production}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: always
+
+  redis:
+    networks: [backend]
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_inst_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: always
+
+  minio:
+    networks: [backend]
+    image: minio/minio:latest
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-storage_admin}
+    entrypoint: ["/bin/sh", "/institution-entrypoint.sh"]
+    secrets: [minio_password]
+    volumes:
+      - minio_inst_data:/data
+      - ./minio-institution-entrypoint.sh:/institution-entrypoint.sh:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: always
+
+  api:
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    networks: [backend, egress]
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.api
+    image: road-risk/api:institution
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      ROAD_RISK_API_ROOT_DIR: /app
+      ROAD_RISK_API_ENV: production
+      ROAD_RISK_INSTITUTION_DEPLOYMENT: "true"
+      ROAD_RISK_PUBLIC_ORIGIN: https://${ROAD_RISK_HOSTNAME:?Set ROAD_RISK_HOSTNAME}
+      POSTGRES_USER: ${POSTGRES_USER:-roadrisk_admin}
+      POSTGRES_DB: ${POSTGRES_DB:-road_risk_production}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      ROAD_RISK_API_TENANT_ID: ${ROAD_RISK_API_TENANT_ID:-default}
+      ROAD_RISK_API_INSTITUTION_NAME: ${ROAD_RISK_API_INSTITUTION_NAME:-xROAD Road Safety Analytics}
+      ROAD_RISK_API_BRAND_NAME: ${ROAD_RISK_API_BRAND_NAME:-xROAD}
+      ROAD_RISK_API_BRAND_PRIMARY_COLOR: ${ROAD_RISK_API_BRAND_PRIMARY_COLOR:-#4B2A8C}
+      ROAD_RISK_API_BRAND_LOGO_URL: ${ROAD_RISK_API_BRAND_LOGO_URL:-/brand/road-accidents-risk-modeling-icon.svg}
+      ROAD_RISK_API_PORTAL_SUBTITLE: ${ROAD_RISK_API_PORTAL_SUBTITLE:-Open road-safety analytics}
+      ROAD_RISK_API_TENANT_CONFIG_PATH: ${ROAD_RISK_API_TENANT_CONFIG_PATH:-/app/configs/institutional_tenant.example.toml}
+      ROAD_RISK_API_COUNTRY_CODE: ${ROAD_RISK_API_COUNTRY_CODE:-FR}
+      ROAD_RISK_API_DEFAULT_LANGUAGE: ${ROAD_RISK_API_DEFAULT_LANGUAGE:-fr}
+      ROAD_RISK_API_DRIVING_SIDE: ${ROAD_RISK_API_DRIVING_SIDE:-right}
+      ROAD_RISK_API_DISTANCE_UNIT: ${ROAD_RISK_API_DISTANCE_UNIT:-km}
+      ROAD_RISK_API_SPEED_UNIT: ${ROAD_RISK_API_SPEED_UNIT:-km/h}
+      ROAD_RISK_API_CURRENCY: ${ROAD_RISK_API_CURRENCY:-EUR}
+      ROAD_RISK_API_ADMINISTRATIVE_TIER: ${ROAD_RISK_API_ADMINISTRATIVE_TIER:-country}
+      ROAD_RISK_API_AUTH_ENABLED: "true"
+      ROAD_RISK_API_CORS_ALLOWED_ORIGINS: https://${ROAD_RISK_HOSTNAME:?Set ROAD_RISK_HOSTNAME}
+      ROAD_RISK_API_RATE_LIMIT_ENABLED: "true"
+      ROAD_RISK_API_AUTH_PROVIDER: ${ROAD_RISK_API_AUTH_PROVIDER:-keycloak}
+      ROAD_RISK_API_AUTH_JWKS_URL: ${ROAD_RISK_API_AUTH_JWKS_URL:?Set HTTPS JWKS URL}
+      ROAD_RISK_API_AUTH_ISSUER: ${ROAD_RISK_API_AUTH_ISSUER:?Set HTTPS OIDC issuer}
+      ROAD_RISK_API_AUTH_AUDIENCE: ${ROAD_RISK_API_AUTH_AUDIENCE:?Set API audience}
+      ROAD_RISK_API_AUTH_CLIENT_ID: ${ROAD_RISK_API_AUTH_CLIENT_ID:-}
+      ROAD_RISK_STORAGE_ENDPOINT_URL: http://minio:9000
+      ROAD_RISK_STORAGE_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-storage_admin}
+      ROAD_RISK_STORAGE_SECRET_ACCESS_KEY_FILE: /run/secrets/minio_password
+      ROAD_RISK_STORAGE_BUCKET: ${ROAD_RISK_STORAGE_BUCKET:-road-risk-artifacts}
+      ROAD_RISK_STORAGE_USE_SSL: "false"
+      ROAD_RISK_STORAGE_AUTO_CREATE_BUCKETS: "true"
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ${ROAD_RISK_INSTITUTION_DATA_DIR:?Set a dedicated institutional data directory}:/app/data
+      - ../../configs:/app/configs:ro
+    secrets: [postgres_password, minio_password]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: always
+
+  worker:
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    networks: [backend, egress]
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.worker
+    image: road-risk/worker:institution
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      ROAD_RISK_API_AUTH_ENABLED: "true"
+      ROAD_RISK_API_AUTH_JWKS_URL: ${ROAD_RISK_API_AUTH_JWKS_URL:?Set HTTPS JWKS URL}
+      ROAD_RISK_API_AUTH_ISSUER: ${ROAD_RISK_API_AUTH_ISSUER:?Set HTTPS OIDC issuer}
+      ROAD_RISK_API_AUTH_AUDIENCE: ${ROAD_RISK_API_AUTH_AUDIENCE:?Set API audience}
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_WORKER_RESULT_BACKEND: redis://redis:6379/1
+      ROAD_RISK_API_TENANT_CONFIG_PATH: ${ROAD_RISK_API_TENANT_CONFIG_PATH:-/app/configs/institutional_tenant.example.toml}
+      ROAD_RISK_INSTITUTION_DEPLOYMENT: "true"
+      ROAD_RISK_PUBLIC_ORIGIN: https://${ROAD_RISK_HOSTNAME:?Set ROAD_RISK_HOSTNAME}
+      POSTGRES_USER: ${POSTGRES_USER:-roadrisk_admin}
+      POSTGRES_DB: ${POSTGRES_DB:-road_risk_production}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      ROAD_RISK_STORAGE_ENDPOINT_URL: http://minio:9000
+      ROAD_RISK_STORAGE_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-storage_admin}
+      ROAD_RISK_STORAGE_SECRET_ACCESS_KEY_FILE: /run/secrets/minio_password
+      ROAD_RISK_STORAGE_BUCKET: ${ROAD_RISK_STORAGE_BUCKET:-road-risk-artifacts}
+    secrets: [postgres_password, minio_password]
+    volumes:
+      - ${ROAD_RISK_INSTITUTION_DATA_DIR:?Set a dedicated institutional data directory}:/app/data
+      - ../../configs:/app/configs:ro
+    restart: always
+
+  web:
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    networks: [frontend, backend]
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web
+      args:
+        NEXT_PUBLIC_API_BASE_URL: "/api/backend"
+    image: road-risk/web:institution
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: /api/backend
+      NEXT_TELEMETRY_DISABLED: "1"
+      ROAD_RISK_INSTITUTION_DEPLOYMENT: "true"
+      ROAD_RISK_PUBLIC_ORIGIN: https://${ROAD_RISK_HOSTNAME:?Set ROAD_RISK_HOSTNAME}
+      ROAD_RISK_WEB_OIDC_ISSUER: ${ROAD_RISK_API_AUTH_ISSUER:?Set HTTPS OIDC issuer}
+      ROAD_RISK_WEB_OIDC_CLIENT_ID: ${ROAD_RISK_WEB_OIDC_CLIENT_ID:?Set web OIDC client ID}
+      ROAD_RISK_WEB_OIDC_CLIENT_SECRET_FILE: /run/secrets/oidc_client_secret
+      ROAD_RISK_WEB_OIDC_REDIRECT_URI: https://${ROAD_RISK_HOSTNAME:?Set ROAD_RISK_HOSTNAME}/api/auth/callback
+      ROAD_RISK_WEB_OIDC_AUTHORIZATION_ENDPOINT: ${ROAD_RISK_WEB_OIDC_AUTHORIZATION_ENDPOINT:-}
+      ROAD_RISK_WEB_OIDC_TOKEN_ENDPOINT: ${ROAD_RISK_WEB_OIDC_TOKEN_ENDPOINT:-}
+      ROAD_RISK_WEB_OIDC_LOGOUT_ENDPOINT: ${ROAD_RISK_WEB_OIDC_LOGOUT_ENDPOINT:-}
+      ROAD_RISK_WEB_API_BASE_URL: http://api:8000
+    secrets: [oidc_client_secret]
+    volumes:
+      - ${ROAD_RISK_INSTITUTION_BRAND_DIR:?Set the institution public brand asset directory}:/app/apps/web/public/institution-brand:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  gateway:
+    networks: [frontend]
+    image: caddy:2.10-alpine
+    depends_on: [web]
+    environment:
+      ROAD_RISK_HOSTNAME: ${ROAD_RISK_HOSTNAME:?Set ROAD_RISK_HOSTNAME}
+    ports:
+      - "${HTTPS_HOST_PORT:-443}:443"
+    secrets: [tls_certificate, tls_private_key]
+    volumes:
+      - ./Caddyfile.institution:/etc/caddy/Caddyfile:ro
+      - caddy_inst_data:/data
+      - caddy_inst_config:/config
+    restart: always
+
+networks:
+  frontend: {}
+  backend:
+    internal: true
+  egress: {}
+
+secrets:
+  postgres_password:
+    file: ${POSTGRES_PASSWORD_FILE:?Set path to database password file}
+  minio_password:
+    file: ${MINIO_ROOT_PASSWORD_FILE:?Set path to storage password file}
+  oidc_client_secret:
+    file: ${ROAD_RISK_WEB_OIDC_CLIENT_SECRET_FILE:?Set path to web client secret file}
+  tls_certificate:
+    file: ${ROAD_RISK_TLS_CERTIFICATE_FILE:?Set path to institutional TLS certificate}
+  tls_private_key:
+    file: ${ROAD_RISK_TLS_PRIVATE_KEY_FILE:?Set path to institutional TLS key}
+
+volumes:
+  caddy_inst_data: {}
+  caddy_inst_config: {}
+  postgres_inst_data: {}
+  redis_inst_data: {}
+  minio_inst_data: {}

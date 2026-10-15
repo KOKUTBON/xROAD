@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>xROAD</title>
+  <defs>
+    <clipPath id="xroad-plate"><path d="M32 8.5 55.5 32 32 55.5 8.5 32Z"/></clipPath>
+    <linearGradient id="xroad-amber" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC43D"/>
+      <stop offset="1" stop-color="#FFA800"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#101317"/>
+  <path d="M32 8.5 55.5 32 32 55.5 8.5 32Z" fill="url(#xroad-amber)" stroke="url(#xroad-amber)" stroke-width="5" stroke-linejoin="round"/>
+  <g clip-path="url(#xroad-plate)">
+    <path d="M16.5 60 29.6 21h4.8L47.5 60Z" fill="#101317"/>
+    <path d="M32 52.5v-5.2M32 43.2v-4.1M32 35.5v-3.1M32 29.1v-2.2" stroke="#FFB400" stroke-width="1.9" stroke-linecap="round"/>
+  </g>
+  <circle cx="32" cy="18.4" r="3.1" fill="#101317"/>
+  <circle cx="32" cy="18.4" r="1.2" fill="#FF4B3E"/>
+</svg>

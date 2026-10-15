@@ -1,0 +1,64 @@
+name: Docker Build
+
+# Builds the API, worker, and web container images on every PR and
+# push to main so regressions in `infra/docker/` are caught before
+# they reach production deployments.
+#
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/docker/**"
+      - "apps/**"
+      - "services/**"
+      - "src/**"
+      - "pyproject.toml"
+      - ".github/workflows/docker-build.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/docker/**"
+      - "apps/**"
+      - "services/**"
+      - "src/**"
+      - "pyproject.toml"
+      - ".github/workflows/docker-build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-images:
+    name: Build ${{ matrix.image }} image
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: api
+            dockerfile: infra/docker/Dockerfile.api
+          - image: worker
+            dockerfile: infra/docker/Dockerfile.worker
+          - image: web
+            dockerfile: infra/docker/Dockerfile.web
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+
+      - name: Build ${{ matrix.image }} image
+        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: false
+          load: true
+          tags: road-risk/${{ matrix.image }}:ci-${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}

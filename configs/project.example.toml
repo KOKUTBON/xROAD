@@ -1,0 +1,62 @@
+# xROAD Institutional Risk Modeling Configuration Template
+# This file configures the data ingestion, geography, white-label branding,
+# and modeling parameters for a single jurisdiction or tenant.
+
+[project]
+name = "puglia-road-risk-pilot"
+country_code = "IT"
+timezone = "Europe/Rome"
+legacy_zip = "/absolute/path/to/ROAD ACCIDENTS RISK MODELING.zip"
+
+[institution]
+# White-label institution identification
+id = "puglia_region_it"
+name = "Regione Puglia - Dipartimento Mobilità"
+tier = "region"                          # country | region | province | municipality | concessionaire | police_precinct
+brand_name = "xROAD Puglia"
+brand_primary_color = "#4B2A8C"          # Institutional hex color (WCAG AAA compliant)
+brand_logo_url = "/brand/road-accidents-risk-modeling-icon.svg"
+portal_subtitle = "Open road-safety analytics for reproducible risk screening"
+
+[localization]
+# Regional localization & driving standards
+language = "it"                          # Primary UI & reporting language
+fallback_languages = ["en"]
+driving_side = "right"                   # "right" (Continental Europe/Americas) or "left" (UK/Australia/Japan)
+distance_unit = "km"                     # "km" or "miles"
+speed_unit = "km/h"                      # "km/h" or "mph"
+currency = "EUR"                         # ISO 4217 currency code
+
+[geography]
+jurisdiction_name = "Puglia"
+admin_level = "region"
+network_type = "drive"
+segment_length_m = 100
+
+[geospatial]
+# Geospatial reference systems and road networks
+native_crs = "EPSG:32633"                # UTM zone 33N (Puglia) or native cadastral projection
+target_crs = "EPSG:4326"                # Standard WGS84 for public map serving
+road_network_source = "osm"             # "osm" (OpenStreetMap) | "cadastral" | "here" | "tomtom"
+
+[data]
+crash_csv_member = "synthetic_examples/crashes.csv"
+weather_provider = "open-meteo"
+population_provider = "ghsl"
+traffic_provider = "pending"
+
+[ingestion]
+schema_standard = "cadas"               # "cadas" (EU CARE) | "baac" (FR) | "istat" (IT) | "stats19" (UK) | "mmucc" (US)
+crash_source_format = "csv"
+
+[modeling]
+tasks = ["segment_frequency", "severity_classification"]
+spatial_holdout = "city"
+temporal_holdout = "year"
+
+[governance]
+# Privacy, ethics & trustworthy AI
+k_anonymity_threshold = 5                # Minimum crash incidents required to display raw map clusters
+data_minimization_mode = "strict"        # Zero PII retained in analytical tables
+compliance_frameworks = ["eu_ai_act", "gdpr"]
+allow_public_raw_coordinates = false    # Enforces aggregated tile/segment display for public tier

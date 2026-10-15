@@ -1,0 +1,1769 @@
+{
+  "generated": "2026-10-10",
+  "scope": "Dependency metadata observed from committed npm locks and local validation environments. Not a legal clearance or complete binary/container SBOM. Preserve upstream notices and inspect assets separately.",
+  "dependencies": [
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@axe-core/playwright",
+      "version": "4.11.3",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@emnapi/runtime",
+      "version": "1.11.3",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/colour",
+      "version": "1.1.0",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-darwin-arm64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-darwin-x64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-freebsd-wasm32",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-darwin-arm64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-darwin-x64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linux-arm",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linux-arm64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linux-ppc64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linux-riscv64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linux-s390x",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linux-x64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linuxmusl-arm64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-libvips-linuxmusl-x64",
+      "version": "1.3.4",
+      "license": "LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linux-arm",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linux-arm64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linux-ppc64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linux-riscv64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linux-s390x",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linux-x64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linuxmusl-arm64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-linuxmusl-x64",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-wasm32",
+      "version": "0.35.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later AND MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-webcontainers-wasm32",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-win32-arm64",
+      "version": "0.35.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-win32-ia32",
+      "version": "0.35.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@img/sharp-win32-x64",
+      "version": "0.35.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@jridgewell/resolve-uri",
+      "version": "3.1.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.6.0",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@jridgewell/trace-mapping",
+      "version": "0.3.31",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@mapbox/jsonlint-lines-primitives",
+      "version": "2.0.3",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@mapbox/point-geometry",
+      "version": "1.1.0",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@mapbox/tiny-sdf",
+      "version": "2.2.0",
+      "license": "BSD-2-Clause",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@mapbox/unitbezier",
+      "version": "1.0.0",
+      "license": "BSD-2-Clause",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@mapbox/vector-tile",
+      "version": "3.0.0",
+      "license": "BSD-3-Clause",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@maplibre/geojson-vt",
+      "version": "6.1.1",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@maplibre/maplibre-gl-style-spec",
+      "version": "26.4.4",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@maplibre/mlt",
+      "version": "1.3.0",
+      "license": "(MIT OR Apache-2.0)",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@maplibre/vt-pbf",
+      "version": "4.3.2",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/env",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-darwin-arm64",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-darwin-x64",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-linux-arm64-gnu",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-linux-arm64-musl",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-linux-x64-gnu",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-linux-x64-musl",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-win32-arm64-msvc",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@next/swc-win32-x64-msvc",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@oxc-project/types",
+      "version": "0.151.0",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@playwright/test",
+      "version": "1.61.0",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-android-arm-eabi",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-android-arm64",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-darwin-arm64",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-darwin-x64",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-freebsd-x64",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-arm64-gnu",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-arm64-musl",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-ppc64-gnu",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-s390x-gnu",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-linux-x64-musl",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-openharmony-arm64",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-win32-arm64-msvc",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@rolldown/pluginutils",
+      "version": "1.0.1",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@swc/helpers",
+      "version": "0.5.23",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/chai",
+      "version": "5.2.3",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/deep-eql",
+      "version": "4.0.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/estree",
+      "version": "1.0.9",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/geojson",
+      "version": "7946.0.16",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/node",
+      "version": "26.6.3",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/react",
+      "version": "19.2.14",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@types/react-dom",
+      "version": "19.2.3",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@vitest/mocker",
+      "version": "5.0.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "@vitest/spy",
+      "version": "5.0.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "assertion-error",
+      "version": "2.0.1",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "axe-core",
+      "version": "4.11.4",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "baseline-browser-mapping",
+      "version": "2.11.25",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "bidi-js",
+      "version": "1.1.0",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "caniuse-lite",
+      "version": "1.0.30001799",
+      "license": "CC-BY-4.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "chai",
+      "version": "6.2.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "client-only",
+      "version": "0.0.1",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "csstype",
+      "version": "3.2.3",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "earcut",
+      "version": "3.2.3",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "es-module-lexer",
+      "version": "2.3.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "estree-walker",
+      "version": "3.0.3",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "expect-type",
+      "version": "1.4.0",
+      "license": "Apache-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "fdir",
+      "version": "6.5.0",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "fsevents",
+      "version": "2.3.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "fsevents",
+      "version": "2.3.3",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "gl-matrix",
+      "version": "3.4.4",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "json-stringify-pretty-compact",
+      "version": "4.0.0",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "kdbush",
+      "version": "4.1.0",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-android-arm64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-darwin-arm64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-darwin-x64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-freebsd-x64",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-linux-arm64-gnu",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-linux-arm64-musl",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-linux-x64-gnu",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-linux-x64-musl",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-win32-arm64-msvc",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "magic-string",
+      "version": "1.4.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "maplibre-gl",
+      "version": "6.11.2",
+      "license": "BSD-3-Clause",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "minimist",
+      "version": "1.2.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "murmurhash-js",
+      "version": "1.0.0",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "nanoid",
+      "version": "3.3.19",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "next",
+      "version": "16.3.8",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "obug",
+      "version": "2.2.1",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "pbf",
+      "version": "5.1.2",
+      "license": "BSD-3-Clause",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "picocolors",
+      "version": "1.1.1",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "picomatch",
+      "version": "4.0.7",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "playwright",
+      "version": "1.61.0",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "playwright-core",
+      "version": "1.61.0",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "postcss",
+      "version": "8.5.28",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "potpack",
+      "version": "2.1.0",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "protocol-buffers-schema",
+      "version": "3.6.1",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "quickselect",
+      "version": "3.0.0",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "react",
+      "version": "19.2.6",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "react-dom",
+      "version": "19.2.6",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "resolve-protobuf-schema",
+      "version": "2.1.0",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "rolldown",
+      "version": "1.2.11",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "scheduler",
+      "version": "0.27.0",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "semver",
+      "version": "7.8.5",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "sharp",
+      "version": "0.35.5",
+      "license": "Apache-2.0",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "license": "BSD-3-Clause",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "std-env",
+      "version": "4.3.0",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "styled-jsx",
+      "version": "5.1.6",
+      "license": "MIT",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "tinybench",
+      "version": "6.2.0",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "tinyexec",
+      "version": "1.3.1",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "tinyglobby",
+      "version": "0.2.17",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "tinyqueue",
+      "version": "3.0.0",
+      "license": "ISC",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "tslib",
+      "version": "2.8.1",
+      "license": "0BSD",
+      "development": false
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "typescript",
+      "version": "6.0.3",
+      "license": "Apache-2.0",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "undici-types",
+      "version": "8.9.0",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "vite",
+      "version": "8.3.1",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "vitest",
+      "version": "5.0.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "npm",
+      "manifest": "apps/web/package-lock.json",
+      "name": "why-is-node-running",
+      "version": "3.2.2",
+      "license": "MIT",
+      "development": true
+    },
+    {
+      "ecosystem": "python",
+      "name": "Jinja2",
+      "version": "3.1.6",
+      "license": "License :: OSI Approved :: BSD License",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "Mako",
+      "version": "1.4.3",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "MarkupSafe",
+      "version": "3.0.4",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "PyJWT",
+      "version": "2.15.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "Pygments",
+      "version": "2.21.0",
+      "license": "BSD-2-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "SQLAlchemy",
+      "version": "2.1.4",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "alembic",
+      "version": "1.20.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "amqp",
+      "version": "5.4.1",
+      "license": "BSD",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "anyio",
+      "version": "4.15.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "ast_serialize",
+      "version": "0.12.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "billiard",
+      "version": "4.3.1",
+      "license": "BSD",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "boto3",
+      "version": "1.43.111",
+      "license": "Apache-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "botocore",
+      "version": "1.43.111",
+      "license": "Apache-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "branca",
+      "version": "0.8.2",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "celery",
+      "version": "5.6.3",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "certifi",
+      "version": "2026.7.22",
+      "license": "MPL-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "cffi",
+      "version": "2.1.1",
+      "license": "MIT-0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "charset-normalizer",
+      "version": "3.5.2",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "click",
+      "version": "8.5.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "click-didyoumean",
+      "version": "0.3.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "click-plugins",
+      "version": "1.1.1.2",
+      "license": "New BSD",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "click-repl",
+      "version": "0.4.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "cloudpickle",
+      "version": "3.1.2",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "cryptography",
+      "version": "50.0.2",
+      "license": "Apache-2.0 OR BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "duckdb",
+      "version": "1.5.6",
+      "license": "License :: OSI Approved :: MIT License",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "et_xmlfile",
+      "version": "2.0.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "fastapi",
+      "version": "0.143.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "folium",
+      "version": "0.20.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "geopandas",
+      "version": "1.2.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "h11",
+      "version": "0.16.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "httpcore",
+      "version": "1.0.9",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "httpx",
+      "version": "0.28.1",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "idna",
+      "version": "3.20",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "iniconfig",
+      "version": "2.3.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "jmespath",
+      "version": "1.1.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "joblib",
+      "version": "1.6.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "kombu",
+      "version": "5.6.2",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "librt",
+      "version": "0.16.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "mypy",
+      "version": "2.4.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "mypy_extensions",
+      "version": "1.1.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "narwhals",
+      "version": "2.27.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "networkx",
+      "version": "3.7",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "numpy",
+      "version": "2.5.3",
+      "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "openpyxl",
+      "version": "3.1.5",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "opentelemetry-api",
+      "version": "1.45.1",
+      "license": "Apache-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "osmnx",
+      "version": "2.1.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "packaging",
+      "version": "26.3",
+      "license": "Apache-2.0 OR BSD-2-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pandas",
+      "version": "3.0.6",
+      "license": "See upstream package license text (metadata contains full terms)",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pathspec",
+      "version": "1.1.1",
+      "license": "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pluggy",
+      "version": "1.6.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "prompt_toolkit",
+      "version": "3.0.53",
+      "license": "License :: OSI Approved :: BSD License",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "psycopg",
+      "version": "3.3.6",
+      "license": "LGPL-3.0-only",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "psycopg-binary",
+      "version": "3.3.6",
+      "license": "LGPL-3.0-only",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pyarrow",
+      "version": "26.0.0",
+      "license": "Apache-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pycountry",
+      "version": "26.2.16",
+      "license": "LGPL-2.1-only",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pycparser",
+      "version": "3.11",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pydantic",
+      "version": "2.14.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pydantic-settings",
+      "version": "2.15.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pydantic_core",
+      "version": "2.50.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pyogrio",
+      "version": "0.13.0",
+      "license": "See upstream package license text (metadata contains full terms)",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pyproj",
+      "version": "3.8.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pytest",
+      "version": "9.1.1",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "license": "Dual License",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "python-dotenv",
+      "version": "1.2.4",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "redis",
+      "version": "6.4.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "requests",
+      "version": "2.34.2",
+      "license": "Apache-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "ruff",
+      "version": "0.17.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "s3transfer",
+      "version": "0.19.2",
+      "license": "Apache License 2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "scikit-learn",
+      "version": "1.9.1",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "scipy",
+      "version": "1.18.1",
+      "license": "See upstream package license text (metadata contains full terms)",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "shapely",
+      "version": "2.2.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "six",
+      "version": "1.17.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "starlette",
+      "version": "1.7.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "threadpoolctl",
+      "version": "3.7.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "license": "PSF-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "tzdata",
+      "version": "2026.5",
+      "license": "Apache-2.0",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "tzlocal",
+      "version": "5.4.4",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "urllib3",
+      "version": "2.8.0",
+      "license": "MIT",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "vine",
+      "version": "5.1.0",
+      "license": "BSD",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "wcwidth",
+      "version": "0.9.2",
+      "license": "License :: OSI Approved :: MIT License",
+      "scope": "local validation environment; may include development/optional dependencies"
+    },
+    {
+      "ecosystem": "python",
+      "name": "xyzservices",
+      "version": "2026.9.1",
+      "license": "BSD-3-Clause",
+      "scope": "local validation environment; may include development/optional dependencies"
+    }
+  ]
+}

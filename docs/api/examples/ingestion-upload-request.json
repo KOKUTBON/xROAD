@@ -1,0 +1,16 @@
+{
+  "organization_id": "00000000-0000-0000-0000-000000000118",
+  "municipality_id": "00000000-0000-0000-0000-000000000119",
+  "source_id": "00000000-0000-0000-0000-000000000120",
+  "filename": "bari_crashes_2025.csv",
+  "content_type": "text/csv",
+  "parameters": {
+    "engine_adapter": "bari_open_data_crashes",
+    "field_mapping": {
+      "crash_id": "crash_id",
+      "latitude": "latitude",
+      "longitude": "longitude",
+      "occurred_at": "occurred_at"
+    }
+  }
+}

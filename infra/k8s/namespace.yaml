@@ -1,0 +1,8 @@
+# Namespace for the Road Risk production platform.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: road-risk
+  labels:
+    app.kubernetes.io/name: road-risk
+    app.kubernetes.io/part-of: road-risk-platform

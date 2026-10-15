@@ -1,0 +1,369 @@
+"""Run the Bari receive-side signal-phase pipeline in one pass."""
+
+from __future__ import annotations
+
+from datetime import UTC, datetime
+import json
+from pathlib import Path
+from typing import Any
+
+from .modeling import _artifact_reference, _build_lineage_contract, _sha256
+from .signal_phase_delivery_monitor import build_bari_signal_phase_delivery_monitor_bundle
+from .signal_phase_delivery_session import apply_validated_signal_phase_deliveries
+from .signal_phase_support_resolution import build_bari_signal_phase_support_resolution_bundle
+from .signal_phase_support_runtime_cycle import run_bari_signal_phase_support_runtime_cycle
+from .signal_phase_validation_batch import run_bari_signal_phase_validation_batch
+
+
+SIGNAL_PHASE_RECEIVE_CYCLE_VERSION = "signal_phase_receive_cycle_v1"
+SIGNAL_PHASE_RECEIVE_CYCLE_CONTRACT_VERSION = "signal_phase_receive_cycle_public_v1"
+
+
+def _load_json(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"Expected JSON object at: {path}")
+    return payload
+
+
+def _accepted_validation_manifest_paths(batch_payload: dict[str, Any]) -> list[str]:
+    accepted_paths: list[str] = []
+    for row in batch_payload.get("validation_results", []):
+        if row.get("validation_outcome") != "accepted_for_ingestion":
+            continue
+        manifest_path = str(row.get("manifest_path") or "").strip()
+        if manifest_path:
+            accepted_paths.append(manifest_path)
+    return accepted_paths
+
+
+def _accepted_support_validation_manifest_paths(batch_payload: dict[str, Any]) -> list[str]:
+    accepted_paths: list[str] = []
+    for row in batch_payload.get("validation_results", []):
+        if row.get("validation_outcome") != "accepted_support_artifact":
+            continue
+        manifest_path = str(row.get("manifest_path") or "").strip()
+        if manifest_path:
+            accepted_paths.append(manifest_path)
+    return accepted_paths
+
+
+def _cycle_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Bari Signal-Phase Receive Cycle",
+        "",
+        f"As of {payload['generated_at_utc']}, the Bari receive-side signal-phase pipeline has run monitor, validation, and conditional delivery application in sequence.",
+        "",
+        "## Summary",
+        "",
+        f"- monitored delivery rows: `{payload['stats']['monitored_delivery_count']}`",
+        f"- validation-ready rows: `{payload['stats']['validation_ready_count']}`",
+        f"- executed validations: `{payload['stats']['executed_validation_count']}`",
+        f"- accepted for ingestion: `{payload['stats']['accepted_for_ingestion_count']}`",
+        f"- accepted support artifacts: `{payload['stats']['accepted_support_artifact_count']}`",
+        f"- partial-review outcomes: `{payload['stats']['partial_review_count']}`",
+        f"- provider-fix outcomes: `{payload['stats']['provider_fix_required_count']}`",
+        f"- delivery session executed: `{payload['stats']['delivery_session_executed']}`",
+        f"- movements with phase timing: `{payload['stats']['movements_with_phase_timing']}`",
+        f"- movements with phase mapping: `{payload['stats']['movements_with_phase_mapping']}`",
+        f"- support-resolution requests: `{payload['stats']['support_resolution_request_count']}`",
+        f"- support runtime cycle executed: `{payload['stats']['support_runtime_cycle_executed']}`",
+        f"- support apply session executed: `{payload['stats']['support_apply_delivery_session_executed']}`",
+        "",
+        "## Output Paths",
+        "",
+        f"- monitor manifest: `{payload['outputs']['monitor_manifest_path']}`",
+        f"- validation manifest: `{payload['outputs']['validation_batch_manifest_path']}`",
+        f"- delivery session manifest: `{payload['outputs']['delivery_session_manifest_path'] or 'not_run'}`",
+        f"- support-resolution manifest: `{payload['outputs']['support_resolution_manifest_path'] or 'not_run'}`",
+        f"- support-runtime manifest: `{payload['outputs']['support_runtime_cycle_manifest_path'] or 'not_run'}`",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def run_bari_signal_phase_receive_cycle(
+    *,
+    output_dir: str | Path = "data/processed/signal_phase_receive_cycles/bari",
+    signal_phase_delivery_intake_bundle_path: str | Path = "data/planning/signal_phase_delivery_intake/bari/signal_phase_delivery_intake_bundle.json",
+    delivery_receipt_register_path: str | Path = "data/planning/signal_phase_delivery_intake/bari/delivery_receipt_register.csv",
+    delivery_checklist_path: str | Path = "data/planning/signal_phase_acquisition/bari/delivery_checklist.csv",
+    movement_objects_path: str | Path = "data/processed/movement_objects/bari/road_movement_objects.geojson",
+    matched_records_path: str | Path | None = "data/processed/node_matches/bari_open_data_movements/matched_node_records.jsonl",
+    target_request_queue_path: str | Path | None = "data/planning/signal_phase_outreach/bari/target_request_queue.csv",
+    support_movement_review_path: str | Path = "data/reporting/movement_review/bari/movement_review_pack.json",
+    support_phase_readiness_csv_path: str | Path | None = None,
+    support_aggregate_path: str | Path = "data/processed/node_aggregates/bari_open_data_movements/node_year_metrics.csv",
+    support_manual_mapping_stub_path: str | Path = "data/planning/signal_phase_intake/bari/mapping_stubs/arm_phase_mapping_sheet_mapping_stub.json",
+    preview_limit: int = 10,
+) -> dict[str, Any]:
+    output_root = Path(output_dir)
+    output_root.mkdir(parents=True, exist_ok=True)
+
+    intake_bundle_input = Path(signal_phase_delivery_intake_bundle_path)
+    receipt_register_input = Path(delivery_receipt_register_path)
+    checklist_input = Path(delivery_checklist_path)
+    movement_objects_input = Path(movement_objects_path)
+    matched_records_input = Path(matched_records_path) if matched_records_path is not None else None
+    target_request_input = Path(target_request_queue_path) if target_request_queue_path is not None else None
+    support_movement_review_input = Path(support_movement_review_path)
+    support_phase_readiness_input = (
+        Path(support_phase_readiness_csv_path) if support_phase_readiness_csv_path is not None else None
+    )
+    support_aggregate_input = Path(support_aggregate_path)
+    support_manual_mapping_stub_input = Path(support_manual_mapping_stub_path)
+
+    monitor_output_dir = output_root / "monitor"
+    validation_output_dir = output_root / "validation_batch"
+    session_output_dir = output_root / "delivery_session"
+    support_resolution_output_dir = output_root / "support_resolution"
+    support_runtime_output_dir = output_root / "support_runtime_cycle"
+
+    monitor_result = build_bari_signal_phase_delivery_monitor_bundle(
+        output_dir=monitor_output_dir,
+        signal_phase_delivery_intake_bundle_path=intake_bundle_input,
+        delivery_receipt_register_path=receipt_register_input,
+    )
+    validation_result = run_bari_signal_phase_validation_batch(
+        output_dir=validation_output_dir,
+        validation_ready_queue_path=monitor_output_dir / "validation_ready_queue.csv",
+        delivery_receipt_register_path=receipt_register_input,
+        delivery_checklist_path=checklist_input,
+        preview_limit=preview_limit,
+    )
+
+    validation_batch_json_path = validation_output_dir / "signal_phase_validation_batch.json"
+    validation_payload = _load_json(validation_batch_json_path)
+    accepted_manifest_paths = _accepted_validation_manifest_paths(validation_payload)
+    accepted_support_manifest_paths = _accepted_support_validation_manifest_paths(validation_payload)
+
+    session_result: dict[str, Any] | None = None
+    if accepted_manifest_paths:
+        session_result = apply_validated_signal_phase_deliveries(
+            movement_objects_input,
+            accepted_manifest_paths,
+            session_output_dir,
+            matched_records_path=matched_records_input,
+            target_request_queue_path=target_request_input,
+            baseline_movement_objects_path=movement_objects_input,
+        )
+
+    support_resolution_result: dict[str, Any] | None = None
+    support_runtime_result: dict[str, Any] | None = None
+    support_resolution_payload: dict[str, Any] | None = None
+    support_movement_layer_input = movement_objects_input
+    if session_result is not None:
+        support_movement_layer_path = session_result["outputs"].get("movement_signal_phase_geojson_path")
+        if support_movement_layer_path:
+            support_movement_layer_input = Path(str(support_movement_layer_path))
+    if accepted_support_manifest_paths:
+        support_resolution_result = build_bari_signal_phase_support_resolution_bundle(
+            output_dir=support_resolution_output_dir,
+            support_validation_manifest_paths=accepted_support_manifest_paths,
+            movement_review_path=support_movement_review_input,
+            phase_readiness_csv_path=support_phase_readiness_input,
+            movement_objects_path=support_movement_layer_input,
+            aggregate_path=support_aggregate_input,
+            top_n=preview_limit,
+        )
+        support_resolution_payload = _load_json(
+            support_resolution_output_dir / "signal_phase_support_resolution_bundle.json"
+        )
+        support_runtime_result = run_bari_signal_phase_support_runtime_cycle(
+            output_dir=support_runtime_output_dir,
+            signal_phase_support_resolution_bundle_path=support_resolution_output_dir
+            / "signal_phase_support_resolution_bundle.json",
+            manual_mapping_stub_path=support_manual_mapping_stub_input,
+            delivery_checklist_path=checklist_input,
+            movement_objects_path=support_movement_layer_input,
+            preview_limit=preview_limit,
+        )
+
+    cycle_json_path = output_root / "signal_phase_receive_cycle.json"
+    cycle_md_path = output_root / "signal_phase_receive_cycle.md"
+    manifest_path = output_root / "signal_phase_receive_cycle.manifest.json"
+
+    generated_at_utc = datetime.now(UTC).isoformat()
+    stats = {
+        "generated_at_utc": generated_at_utc,
+        "monitored_delivery_count": monitor_result["stats"]["monitored_delivery_count"],
+        "detected_file_count": monitor_result["stats"]["detected_file_count"],
+        "validation_ready_count": monitor_result["stats"]["validation_ready_count"],
+        "executed_validation_count": validation_result["stats"]["executed_validation_count"],
+        "accepted_for_ingestion_count": validation_result["stats"]["accepted_for_ingestion_count"],
+        "accepted_support_artifact_count": int(validation_result["stats"].get("accepted_support_artifact_count") or 0),
+        "partial_review_count": validation_result["stats"]["partial_review_count"],
+        "provider_fix_required_count": validation_result["stats"]["provider_fix_required_count"],
+        "skipped_validation_count": validation_result["stats"]["skipped_count"],
+        "delivery_session_executed": session_result is not None,
+        "delivery_session_manifest_count": len(accepted_manifest_paths),
+        "movement_count": session_result["stats"]["movement_count"] if session_result else 0,
+        "movements_with_phase_timing": session_result["stats"]["movements_with_phase_timing"] if session_result else 0,
+        "movements_with_phase_mapping": session_result["stats"]["movements_with_phase_mapping"] if session_result else 0,
+        "support_resolution_request_count": int(
+            (support_resolution_payload or {}).get("summary", {}).get("support_request_count") or 0
+        ),
+        "support_manual_review_row_count": int(
+            (support_resolution_payload or {}).get("summary", {}).get("manual_arm_phase_review_row_count") or 0
+        ),
+        "support_pedestrian_review_row_count": int(
+            (support_resolution_payload or {}).get("summary", {}).get("pedestrian_stage_review_row_count") or 0
+        ),
+        "support_runtime_cycle_executed": support_runtime_result is not None,
+        "support_apply_delivery_session_executed": bool(
+            (support_runtime_result or {}).get("stats", {}).get("delivery_session_executed")
+        ),
+        "support_applied_profiles": int(
+            (support_runtime_result or {}).get("stats", {}).get("applied_profile_count") or 0
+        ),
+    }
+    payload = {
+        "signal_phase_receive_cycle_version": SIGNAL_PHASE_RECEIVE_CYCLE_VERSION,
+        "signal_phase_receive_cycle_contract_version": SIGNAL_PHASE_RECEIVE_CYCLE_CONTRACT_VERSION,
+        "generated_at_utc": generated_at_utc,
+        "source": {
+            "adapter": "bari_signal_phase_receive_cycle_runner",
+        },
+        "stats": stats,
+        "inputs": {
+            "signal_phase_delivery_intake_bundle_path": str(intake_bundle_input),
+            "delivery_receipt_register_path": str(receipt_register_input),
+            "delivery_checklist_path": str(checklist_input),
+            "movement_objects_path": str(movement_objects_input),
+            "matched_records_path": str(matched_records_input) if matched_records_input else None,
+            "target_request_queue_path": str(target_request_input) if target_request_input else None,
+            "support_movement_review_path": str(support_movement_review_input),
+            "support_phase_readiness_csv_path": str(support_phase_readiness_input)
+            if support_phase_readiness_input
+            else None,
+            "support_aggregate_path": str(support_aggregate_input),
+            "support_manual_mapping_stub_path": str(support_manual_mapping_stub_input),
+            "preview_limit": int(preview_limit),
+        },
+        "outputs": {
+            "monitor_manifest_path": str(Path(monitor_result["manifest_path"])),
+            "validation_batch_manifest_path": str(Path(validation_result["manifest_path"])),
+            "delivery_session_manifest_path": (
+                str(Path(session_result["manifest_path"])) if session_result else None
+            ),
+            "support_resolution_manifest_path": (
+                str(Path(support_resolution_result["manifest_path"])) if support_resolution_result else None
+            ),
+            "support_runtime_cycle_manifest_path": (
+                str(Path(support_runtime_result["manifest_path"])) if support_runtime_result else None
+            ),
+            "cycle_json_path": str(cycle_json_path),
+            "cycle_md_path": str(cycle_md_path),
+            "manifest_path": str(manifest_path),
+            "accepted_validation_manifest_paths": accepted_manifest_paths,
+            "accepted_support_validation_manifest_paths": accepted_support_manifest_paths,
+        },
+    }
+    cycle_json_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    cycle_md_path.write_text(_cycle_markdown(payload), encoding="utf-8")
+
+    supporting_outputs = [
+        _artifact_reference(
+            "signal_phase_delivery_monitor_bundle",
+            Path(payload["outputs"]["monitor_manifest_path"]),
+            _sha256(Path(payload["outputs"]["monitor_manifest_path"])),
+        ),
+        _artifact_reference(
+            "signal_phase_validation_batch",
+            Path(payload["outputs"]["validation_batch_manifest_path"]),
+            _sha256(Path(payload["outputs"]["validation_batch_manifest_path"])),
+        ),
+    ] + [
+        _artifact_reference("signal_phase_delivery_validation", Path(path), _sha256(Path(path)))
+        for path in accepted_manifest_paths
+    ] + [
+        _artifact_reference("signal_phase_delivery_validation", Path(path), _sha256(Path(path)))
+        for path in accepted_support_manifest_paths
+    ]
+    if payload["outputs"]["delivery_session_manifest_path"]:
+        supporting_outputs.append(
+            _artifact_reference(
+                "signal_phase_delivery_session",
+                Path(payload["outputs"]["delivery_session_manifest_path"]),
+                _sha256(Path(payload["outputs"]["delivery_session_manifest_path"])),
+            )
+        )
+    if payload["outputs"]["support_resolution_manifest_path"]:
+        supporting_outputs.append(
+            _artifact_reference(
+                "signal_phase_support_resolution_bundle",
+                Path(payload["outputs"]["support_resolution_manifest_path"]),
+                _sha256(Path(payload["outputs"]["support_resolution_manifest_path"])),
+            )
+        )
+    if payload["outputs"]["support_runtime_cycle_manifest_path"]:
+        supporting_outputs.append(
+            _artifact_reference(
+                "signal_phase_support_runtime_cycle",
+                Path(payload["outputs"]["support_runtime_cycle_manifest_path"]),
+                _sha256(Path(payload["outputs"]["support_runtime_cycle_manifest_path"])),
+            )
+        )
+
+    manifest = {
+        "signal_phase_receive_cycle_version": SIGNAL_PHASE_RECEIVE_CYCLE_VERSION,
+        "contract": {
+            "resource_name": "signal_phase_receive_cycle",
+            "public_contract_version": SIGNAL_PHASE_RECEIVE_CYCLE_CONTRACT_VERSION,
+            "signal_phase_receive_cycle_version": SIGNAL_PHASE_RECEIVE_CYCLE_VERSION,
+        },
+        "source": payload["source"],
+        "stats": stats,
+        "inputs": payload["inputs"],
+        "outputs": {
+            "manifest_path": str(manifest_path),
+            "cycle_json_path": str(cycle_json_path),
+            "cycle_json_sha256": _sha256(cycle_json_path),
+            "cycle_md_path": str(cycle_md_path),
+            "cycle_md_sha256": _sha256(cycle_md_path),
+            "monitor_manifest_path": payload["outputs"]["monitor_manifest_path"],
+            "validation_batch_manifest_path": payload["outputs"]["validation_batch_manifest_path"],
+            "delivery_session_manifest_path": payload["outputs"]["delivery_session_manifest_path"],
+            "support_resolution_manifest_path": payload["outputs"]["support_resolution_manifest_path"],
+            "support_runtime_cycle_manifest_path": payload["outputs"]["support_runtime_cycle_manifest_path"],
+            "accepted_validation_manifest_paths": accepted_manifest_paths,
+            "accepted_support_validation_manifest_paths": accepted_support_manifest_paths,
+        },
+        "lineage": _build_lineage_contract(
+            upstream_inputs=[
+                _artifact_reference(
+                    "signal_phase_delivery_intake_bundle",
+                    intake_bundle_input,
+                    _sha256(intake_bundle_input),
+                ),
+                _artifact_reference(
+                    "signal_phase_delivery_receipt_register",
+                    receipt_register_input,
+                    _sha256(receipt_register_input),
+                ),
+                _artifact_reference(
+                    "signal_phase_delivery_checklist",
+                    checklist_input,
+                    _sha256(checklist_input),
+                ),
+                _artifact_reference(
+                    "movement_objects",
+                    movement_objects_input,
+                    _sha256(movement_objects_input),
+                ),
+            ],
+            run_record_path=manifest_path,
+            publishable_outputs=[
+                _artifact_reference("signal_phase_receive_cycle_json", cycle_json_path, _sha256(cycle_json_path)),
+                _artifact_reference("signal_phase_receive_cycle_markdown", cycle_md_path, _sha256(cycle_md_path)),
+            ],
+            supporting_outputs=supporting_outputs,
+        ),
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
+    return {
+        "signal_phase_receive_cycle_version": SIGNAL_PHASE_RECEIVE_CYCLE_VERSION,
+        "manifest_path": str(manifest_path),
+        "manifest_sha256": _sha256(manifest_path),
+        "stats": stats,
+    }

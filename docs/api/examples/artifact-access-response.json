@@ -1,0 +1,9 @@
+{
+  "api_version": "v1",
+  "access": {
+    "access_mode": "presigned_url",
+    "publication_tier": "restricted",
+    "expires_in_seconds": 3600,
+    "download_url": "https://object-storage.example.gov/road-risk/reports/report-001.md?signature=..."
+  }
+}

@@ -1,0 +1,168 @@
+# Reproducible local staging stack for issue #118.
+#
+# This file deliberately uses its own Compose project name and volumes so
+# staging smoke tests do not delete or mutate the normal local-dev stack.
+
+name: road-risk-staging
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-road_risk_staging}
+    ports:
+      - "${POSTGRES_HOST_PORT:-15432}:5432"
+    volumes:
+      - staging_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-road_risk_staging}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_HOST_PORT:-16379}:6379"
+    volumes:
+      - staging_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "${MINIO_API_HOST_PORT:-19000}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT:-19001}:9001"
+    volumes:
+      - staging_minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.api
+    image: road-risk/api:staging
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      ROAD_RISK_API_ROOT_DIR: /app
+      ROAD_RISK_API_ENV: ${ROAD_RISK_API_ENV:-staging-local}
+      ROAD_RISK_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-road_risk_staging}
+      ROAD_RISK_API_AUTH_ENABLED: ${ROAD_RISK_API_AUTH_ENABLED:-false}
+      ROAD_RISK_STORAGE_ENDPOINT_URL: http://minio:9000
+      ROAD_RISK_STORAGE_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minioadmin}
+      ROAD_RISK_STORAGE_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      ROAD_RISK_STORAGE_BUCKET: ${ROAD_RISK_STORAGE_BUCKET:-road-risk-staging}
+      ROAD_RISK_STORAGE_USE_SSL: "false"
+      ROAD_RISK_STORAGE_VERIFY_SSL: "false"
+      ROAD_RISK_STORAGE_AUTO_CREATE_BUCKETS: "true"
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_BUILD_SHA: ${ROAD_RISK_BUILD_SHA:-local-staging}
+      ROAD_RISK_BUILD_REF: ${ROAD_RISK_BUILD_REF:-issue-118}
+      ROAD_RISK_BUILD_TIMESTAMP: ${ROAD_RISK_BUILD_TIMESTAMP:-2026-05-26T00:00:00Z}
+    volumes:
+      - ../../data:/app/data:ro
+    ports:
+      - "${API_HOST_PORT:-18000}:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.worker
+    image: road-risk/worker:staging
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_WORKER_RESULT_BACKEND: redis://redis:6379/1
+      ROAD_RISK_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-road_risk_staging}
+      ROAD_RISK_WORKER_CONCURRENCY: ${ROAD_RISK_WORKER_CONCURRENCY:-4}
+      ROAD_RISK_STORAGE_ENDPOINT_URL: http://minio:9000
+      ROAD_RISK_STORAGE_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minioadmin}
+      ROAD_RISK_STORAGE_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      ROAD_RISK_STORAGE_BUCKET: ${ROAD_RISK_STORAGE_BUCKET:-road-risk-staging}
+      ROAD_RISK_STORAGE_USE_SSL: "false"
+      ROAD_RISK_STORAGE_VERIFY_SSL: "false"
+      ROAD_RISK_STORAGE_AUTO_CREATE_BUCKETS: "true"
+    volumes:
+      - ../../data:/app/data:ro
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A services.workers.celery_app inspect ping -d celery@$$HOSTNAME --timeout 10 || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+    restart: unless-stopped
+
+  scheduler:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.worker
+    image: road-risk/worker:staging
+    depends_on:
+      redis:
+        condition: service_healthy
+      worker:
+        condition: service_started
+    environment:
+      ROAD_RISK_REDIS_URL: redis://redis:6379/0
+      ROAD_RISK_WORKER_RESULT_BACKEND: redis://redis:6379/1
+      ROAD_RISK_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-road_risk_staging}
+    command:
+      - celery
+      - -A
+      - services.scheduler.main
+      - beat
+      - --loglevel=INFO
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web
+    image: road-risk/web:staging
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:${API_HOST_PORT:-18000}}
+    ports:
+      - "${WEB_HOST_PORT:-13000}:3000"
+    restart: unless-stopped
+
+volumes:
+  staging_postgres_data: {}
+  staging_redis_data: {}
+  staging_minio_data: {}

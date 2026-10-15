@@ -1,0 +1,60 @@
+{
+  "suite_name": "bari-frequency-reference-v1",
+  "model_name": "bari_frequency_baseline",
+  "predictive": {
+    "observations_path": "../../data/models/bari_frequency_registry_reference/holdout_predictions.csv",
+    "target_column": "crash_count",
+    "score_column": "random_forest_poisson_prediction",
+    "positive_cutoff": 0,
+    "thresholds": {
+      "roc_auc": {"operator": ">=", "value": 0.55},
+      "average_precision": {"operator": ">=", "value": 0.2},
+      "expected_calibration_error": {"operator": "<=", "value": 0.35}
+    },
+    "registered_metric_checks": [
+      {"metric": "mae", "operator": "<=", "value": 2.5},
+      {"metric": "top_5pct_crash_share", "operator": ">=", "value": 0.05}
+    ]
+  },
+  "guardrail": {
+    "recommendation_cases": [
+      {
+        "recommendation": {
+          "countermeasure_id": "lighting",
+          "countermeasure_name": "Road lighting upgrade",
+          "effect_ratio_low": 0.65,
+          "effect_ratio_central": 0.75,
+          "effect_ratio_high": 0.9,
+          "benefit_cost_ratio": 2.0,
+          "evidence_source": "CMF evidence library"
+        },
+        "site_features": {"road_class": "residential", "maxspeed": 30},
+        "should_pass": true
+      },
+      {
+        "recommendation": {
+          "countermeasure_id": "roundabout",
+          "countermeasure_name": "Roundabout",
+          "effect_ratio_low": 0.5,
+          "effect_ratio_central": 0.7,
+          "effect_ratio_high": 0.9,
+          "benefit_cost_ratio": 1.5,
+          "evidence_source": "CMF evidence library"
+        },
+        "site_features": {"road_class": "motorway", "maxspeed": 90},
+        "should_pass": false
+      }
+    ]
+  },
+  "fairness": {
+    "group_columns": ["highway"],
+    "minimum_group_rows": 5,
+    "maximum_mae_gap": 0.65
+  },
+  "regression": {
+    "metric_checks": [
+      {"metric": "mae", "direction": "lower", "tolerance": 0.05},
+      {"metric": "top_5pct_crash_share", "direction": "higher", "tolerance": 0.05}
+    ]
+  }
+}

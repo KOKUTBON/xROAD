@@ -1,0 +1,1 @@
+"""Road risk FastAPI service."""
